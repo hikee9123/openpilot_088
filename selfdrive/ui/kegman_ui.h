@@ -426,7 +426,7 @@ static void bb_ui_draw_UI(UIState *s)
 
   // 1. debug
   int xpos = 250;
-  int ypos = 500;
+  int ypos = 400;
   nvgTextAlign(s->vg, NVG_ALIGN_LEFT | NVG_ALIGN_BASELINE);
   nvgFontSize(s->vg, 40);
   nvgFillColor(s->vg, nvgRGBA(255, 255, 255, 255));    
@@ -434,8 +434,10 @@ static void bb_ui_draw_UI(UIState *s)
   auto lead_one = (*s->sm)["modelV2"].getModelV2().getLeadsV3()[0];
   if ( lead_one.getProb() > 0.1 ) {
     ui_print(s, xpos, ypos+50, "P:%.1f", lead_one.getProb()  );
-    ui_print(s, xpos, ypos+100, "Y:%.1f", lead_one.getY()[0]  );
-    ui_print(s, xpos, ypos+150, "V:%.1f", lead_one.getV()[0]  );
+    ui_print(s, xpos, ypos+100, "X:%.1f", lead_one.getX()[0]  );
+    ui_print(s, xpos, ypos+150, "Y:%.1f", lead_one.getY()[0]  );
+    ui_print(s, xpos, ypos+200, "V:%.1f", lead_one.getV()[0]  );
+    ui_print(s, xpos, ypos+250, "A:%.1f", lead_one.getA()[0]  );
   }
 }
 //BB END: functions added for the display of various items
