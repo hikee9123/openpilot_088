@@ -432,7 +432,7 @@ static void bb_ui_draw_UI(UIState *s)
   nvgFillColor(s->vg, nvgRGBA(255, 255, 255, 255));    
 
   auto lead_one = (*s->sm)["modelV2"].getModelV2().getLeadsV3()[0];
-  if ( lead_one.getProb() > 0.5 ) {
+  if ( lead_one.getProb() > 0.1 ) {
     ui_print(s, xpos, ypos+50, "P:%.1f", lead_one.getProb()  );
     ui_print(s, xpos, ypos+100, "Y:%.1f", lead_one.getY()[0]  );
     ui_print(s, xpos, ypos+150, "V:%.1f", lead_one.getV()[0]  );
