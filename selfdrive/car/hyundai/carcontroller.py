@@ -77,7 +77,7 @@ class CarController():
     steeringTorque = abs(CS.out.steeringTorque)
     
     # 1. steer warning
-    if CS.out.steerWarning:
+    if CS.out.steerWarning and CS.out.steeringPressed:
       self.steerWarning_time = 100
     elif self.steerWarning_time:
       if steerAngleDegAbs > 10:
