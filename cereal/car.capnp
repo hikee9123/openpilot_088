@@ -109,6 +109,10 @@ struct CarEvent @0x9b1657f34caf3ad3 {
     wideRoadCameraError @102;
     localizerMalfunction @103;
 
+    # atom
+    steerTorqueOver @105;
+    steerTorqueLow @106;
+
     driverMonitorLowAccDEPRECATED @68;
     radarCanErrorDEPRECATED @15;
     radarCommIssueDEPRECATED @67;
@@ -194,6 +198,10 @@ struct CarState {
   leftBlindspot @33 :Bool; # Is there something blocking the left lane change
   rightBlindspot @34 :Bool; # Is there something blocking the right lane change
 
+  # atom
+  tpms @37 :WheelSpeeds;
+
+
   struct WheelSpeeds {
     # optional wheel speeds
     fl @0 :Float32;
@@ -209,6 +217,12 @@ struct CarState {
     speedOffset @3 :Float32;
     standstill @4 :Bool;
     nonAdaptive @5 :Bool;
+
+    # atom
+    modeSel @6 :Int16;
+    cruiseSwState @7 :Int16;
+    accActive @8 :Bool;
+    gapSet @9 :Int16;
   }
 
   enum GearShifter {

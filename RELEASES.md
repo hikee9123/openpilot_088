@@ -1,5 +1,9 @@
 Version 0.8.8 (2021-08-XX)
 ========================
+ * New driving model with improved laneless performance
+   * Trained on 5000+ hours of diverse driving data from 3000+ users in 40+ countries
+   * Better anti-cheating methods during simulator training ensure the model hugs less in laneless mode
+   * All new desire ground-truthing stack makes the model better at lane changes
  * Hyundai Kona Hybrid 2020 support thanks to haram-KONA!
  * Hyundai Sonata Hybrid 2021 support thanks to Matt-Wash-Burn!
  * Kia Niro Hybrid 2021 support thanks to tetious!
@@ -56,7 +60,7 @@ Version 0.8.3 (2021-04-01)
  * New model
    * Trained on new diverse dataset from 2000+ users from 30+ countries
    * Trained with improved segnet from the comma-pencil community project
-   * 🥬 Dramatically improved end-to-end lateral performance 🥬
+   * �� Dramatically improved end-to-end lateral performance ��
  * Toggle added to disable the use of lanelines
  * NEOS update: update packages and support for new UI
  * New offroad UI based on Qt

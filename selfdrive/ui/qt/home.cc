@@ -66,15 +66,37 @@ void HomeWindow::showDriverView(bool show) {
   sidebar->setVisible(show == false);
 }
 
+int HomeWindow::mouseEventLatch(QMouseEvent* e) {
+  int e_x = e->x();
+  int e_y = e->y();
+  //int e_button= e->button();
+  bool bSidebar = sidebar->isVisible();
+
+  QUIState::ui_state.scene.scr.sidebar = bSidebar;
+  QUIState::ui_state.scene.mouse.touch_x = e_x;
+  QUIState::ui_state.scene.mouse.touch_y = e_y;
+  QUIState::ui_state.scene.mouse.touch_cnt++;
+
+  printf("mousePressEvent %d,%d  \n", e_x, e_y);
+
+  if( btn_dashcam_rec.ptInRect( e_x, e_y ) ) return true;
+
+  //btn_dashcam_rec
+  return false;
+}
+
 void HomeWindow::mousePressEvent(QMouseEvent* e) {
+  if( mouseEventLatch( e ) ) return;
+
+  int bSideBar = sidebar->isVisible();
   // Handle sidebar collapsing
-  if (onroad->isVisible() && (!sidebar->isVisible() || e->x() > sidebar->width())) {
+  if (onroad->isVisible() && (!bSideBar || e->x() > sidebar->width())) {
 
     // TODO: Handle this without exposing pointer to map widget
     // Hide map first if visible, then hide sidebar
     if (onroad->map != nullptr && onroad->map->isVisible()) {
       onroad->map->setVisible(false);
-    } else if (!sidebar->isVisible()) {
+    } else if (!bSideBar) {
       sidebar->setVisible(true);
     } else {
       sidebar->setVisible(false);

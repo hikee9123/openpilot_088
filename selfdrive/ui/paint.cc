@@ -22,6 +22,9 @@
 #include "selfdrive/hardware/hw.h"
 
 #include "selfdrive/ui/ui.h"
+#include "selfdrive/ui/navi.h"
+#include "selfdrive/ui/dashcam.h"
+#include "selfdrive/ui/kegman_ui.h"
 
 static void ui_draw_text(const UIState *s, float x, float y, const char *string, float size, NVGcolor color, const char *font_name) {
   nvgFontFace(s->vg, font_name);
@@ -185,34 +188,41 @@ static void ui_draw_vision_maxspeed(UIState *s) {
   const bool is_cruise_set = maxspeed != 0 && maxspeed != SET_SPEED_NA;
   if (is_cruise_set && !s->scene.is_metric) { maxspeed *= 0.6225; }
 
-  const Rect rect = {bdr_s * 2, int(bdr_s * 1.5), 184, 202};
+  const Rect rect = {bdr_s * 1, int(bdr_s * 1.0), 184, 202};
   ui_fill_rect(s->vg, rect, COLOR_BLACK_ALPHA(100), 30.);
   ui_draw_rect(s->vg, rect, COLOR_WHITE_ALPHA(100), 10, 20.);
 
   nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE);
-  ui_draw_text(s, rect.centerX(), 118, "MAX", 26 * 2.5, COLOR_WHITE_ALPHA(is_cruise_set ? 200 : 100), "sans-regular");
+  ui_draw_text(s, rect.centerX(), 85, "MAX", 26 * 1.5, COLOR_WHITE_ALPHA(is_cruise_set ? 200 : 100), "sans-regular");
   if (is_cruise_set) {
     const std::string maxspeed_str = std::to_string((int)std::nearbyint(maxspeed));
-    ui_draw_text(s, rect.centerX(), 212, maxspeed_str.c_str(), 48 * 2.5, COLOR_WHITE, "sans-bold");
+    ui_draw_text(s, rect.centerX(), 205, maxspeed_str.c_str(), 48 * 2.0, COLOR_WHITE, "sans-bold");
   } else {
-    ui_draw_text(s, rect.centerX(), 212, "N/A", 42 * 2.5, COLOR_WHITE_ALPHA(100), "sans-semibold");
+    ui_draw_text(s, rect.centerX(), 190, "N/A", 42 * 1.5, COLOR_WHITE_ALPHA(100), "sans-semibold");
   }
 }
 
 static void ui_draw_vision_speed(UIState *s) {
   const float speed = std::max(0.0, (*s->sm)["carState"].getCarState().getVEgo() * (s->scene.is_metric ? 3.6 : 2.2369363));
   const std::string speed_str = std::to_string((int)std::nearbyint(speed));
+
+  NVGcolor val_color = COLOR_WHITE;
+  bool  brakePress = s->scene.car_state.getBrakePressed();
+  bool  brakeLights = s->scene.car_state.getBrakeLightsDEPRECATED();
+  if( brakePress  ) val_color = COLOR_RED;
+  else if( brakeLights ) val_color = nvgRGBA(201, 34, 49, 100);   
+
   nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE);
-  ui_draw_text(s, s->fb_w/2, 210, speed_str.c_str(), 96 * 2.5, COLOR_WHITE, "sans-bold");
-  ui_draw_text(s, s->fb_w/2, 290, s->scene.is_metric ? "km/h" : "mph", 36 * 2.5, COLOR_WHITE_ALPHA(200), "sans-regular");
+  ui_draw_text(s, s->fb_w/2, 210, speed_str.c_str(), 96 * 2.5, val_color, "sans-bold");
+  ui_draw_text(s, s->fb_w/2, 290, s->scene.is_metric ? "km/h" : "mph", 36 * 1.5, COLOR_WHITE_ALPHA(200), "sans-regular");
 }
 
 static void ui_draw_vision_event(UIState *s) {
   if (s->scene.engageable) {
     // draw steering wheel
     const int radius = 96;
-    const int center_x = s->fb_w - radius - bdr_s * 2;
-    const int center_y = radius  + (bdr_s * 1.5);
+    const int center_x = s->fb_w - radius - bdr_s * 1;
+    const int center_y = radius  + (bdr_s * 1.0);
     const QColor &color = bg_colors[s->status];
     NVGcolor nvg_color = nvgRGBA(color.red(), color.green(), color.blue(), color.alpha());
     ui_draw_circle_image(s, center_x, center_y, radius, "wheel", nvg_color, 1.0f);
@@ -220,8 +230,8 @@ static void ui_draw_vision_event(UIState *s) {
 }
 
 static void ui_draw_vision_face(UIState *s) {
-  const int radius = 96;
-  const int center_x = radius + (bdr_s * 2);
+  const int radius = 85;
+  const int center_x = radius + (bdr_s * 1);
   const int center_y = s->fb_h - footer_h / 2;
   ui_draw_circle_image(s, center_x, center_y, radius, "driver_face", s->scene.dm_active);
 }
@@ -233,6 +243,10 @@ static void ui_draw_vision_header(UIState *s) {
   ui_draw_vision_maxspeed(s);
   ui_draw_vision_speed(s);
   ui_draw_vision_event(s);
+
+   //BB START: add new measures panel  const int bb_dml_w = 180;
+  bb_ui_draw_UI(s);
+  //BB END: add new measures panel      
 }
 
 static void ui_draw_vision(UIState *s) {
@@ -261,7 +275,10 @@ void ui_draw(UIState *s, int w, int h) {
   nvgBeginFrame(s->vg, s->fb_w, s->fb_h, 1.0f);
   if (draw_vision) {
     ui_draw_vision(s);
+    update_dashcam(s);
   }
+
+  ui_main_navi( s );
   nvgEndFrame(s->vg);
   glDisable(GL_BLEND);
 }
@@ -358,6 +375,25 @@ void ui_nvg_init(UIState *s) {
   std::vector<std::pair<const char *, const char *>> images = {
     {"wheel", "../assets/img_chffr_wheel.png"},
     {"driver_face", "../assets/img_driver_face.png"},
+    {"compass", "../assets/compass/img_compass.png"},
+    {"direction", "../assets/compass/img_direction.png"},
+
+    {"speed_30", "../assets/navigation/img_30_speedahead.png"},
+    {"speed_40", "../assets/navigation/img_40_speedahead.png"},
+    {"speed_50", "../assets/navigation/img_50_speedahead.png"},
+    {"speed_60", "../assets/navigation/img_60_speedahead.png"},
+    {"speed_70", "../assets/navigation/img_70_speedahead.png"},
+    {"speed_80", "../assets/navigation/img_80_speedahead.png"},
+    {"speed_90", "../assets/navigation/img_90_speedahead.png"},
+    {"speed_100", "../assets/navigation/img_100_speedahead.png"},
+    {"speed_110", "../assets/navigation/img_110_speedahead.png"},
+    {"speed_var", "../assets/navigation/img_var_speedahead.png"}, 
+    {"img_space", "../assets/navigation/img_space.png"},
+    {"traf_turn", "../assets/img_trafficSign_turn.png"}, 
+    {"car_left",  "../assets/navigation/img_car_left.png"},
+    {"car_right", "../assets/navigation/img_car_right.png"},
+    {"speed_bump", "../assets/navigation/img_speed_bump.png"},
+    {"bus_only", "../assets/navigation/img_bus_only.png"},
   };
   for (auto [name, file] : images) {
     s->images[name] = nvgCreateImage(s->vg, file, 1);

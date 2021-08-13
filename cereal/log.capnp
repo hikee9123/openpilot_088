@@ -300,6 +300,9 @@ struct DeviceState @0xa4d8b5af2aa492eb {
   networkStrength @24 :NetworkStrength;
   carBatteryCapacityUwh @25 :UInt32;
 
+  # atom
+  wifiIpAddress @34 :Text;
+  
   fanSpeedPercentDesired @10 :UInt16;
   started @11 :Bool;
   startedMonoTime @13 :UInt64;
@@ -553,6 +556,13 @@ struct ControlsState @0x97ff69c53601abf1 {
 
   cumLagMs @15 :Float32;
   canErrorCounter @57 :UInt32;
+
+  # atom
+  output @60 :Float32;
+  alertTextMsg1  @61 :Text;
+  alertTextMsg2  @62 :Text;
+  alertTextMsg3  @63 :Text;
+
 
   lateralControlState :union {
     indiState @52 :LateralINDIState;
@@ -869,6 +879,9 @@ struct LateralPlan @0xe1e9318e2ae8b51e {
   psis @26 :List(Float32);
   curvatures @27 :List(Float32);
   curvatureRates @28 :List(Float32);
+
+  # atom
+  laneLess @29 :Bool;
 
   enum Desire {
     none @0;
@@ -1301,6 +1314,24 @@ struct LiveParametersData {
   posenetValid @9 :Bool;
 }
 
+struct LiveNaviData {
+  id @0 :UInt8;
+  ts @1 :UInt64;  
+  speedLimit @2 :Float32;
+  speedLimitDistance @3 :Float32;
+  safetySign @4 :Float32;
+  roadCurvature @5 :Float32;
+  mapValid @6 :Bool;
+  mapEnable @7 :Int32;
+  trafficType @8 :Int32;
+
+  turnInfo @9 :Int32;
+  distanceToTurn @10 :Int32;      
+
+   arrivalSec @11 :Float32;
+   arrivalDistance @12 :Float32;
+}
+
 struct LiveMapDataDEPRECATED {
   speedLimitValid @0 :Bool;
   speedLimit @1 :Float32;
@@ -1420,7 +1451,9 @@ struct Event {
     deviceState @6 :DeviceState;
     logMessage @18 :Text;
 
-
+    # NAVI Info
+    liveNaviData @80 :LiveNaviData;
+  
     # *********** debug ***********
     testJoystick @52 :Joystick;
 
