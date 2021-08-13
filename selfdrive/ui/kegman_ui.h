@@ -311,7 +311,8 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w )
     char val_str[16];
     char uom_str[6];
     NVGcolor val_color = nvgRGBA(255, 255, 255, 200);
-    //if (scene->lead_data[0].getStatus()) {
+    int status = 1;// scene->lead_data[0].getStatus();
+    if ( status ) {
       //show Orange if negative speed (approaching)
       //show Orange if negative speed faster than 5mph (approaching fast)
       if((int)(lead_v_rel1) < 0) {
@@ -326,9 +327,9 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w )
       } else {
          snprintf(val_str, sizeof(val_str), "%d", (int)(lead_v_rel1 * 2.2374144 + 0.5));
       }
-    //} else {
-    //   snprintf(val_str, sizeof(val_str), "-");
-    //}
+    } else {
+       snprintf(val_str, sizeof(val_str), "-");
+    }
     if (scene->is_metric) {
       snprintf(uom_str, sizeof(uom_str), "km/h");;
     } else {
