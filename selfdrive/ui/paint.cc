@@ -245,7 +245,8 @@ static void ui_draw_vision_header(UIState *s) {
   ui_draw_vision_event(s);
 
    //BB START: add new measures panel  const int bb_dml_w = 180;
-  bb_ui_draw_UI(s);
+   if( 0 )
+    bb_ui_draw_UI(s);
   //BB END: add new measures panel      
 }
 
