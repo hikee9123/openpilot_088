@@ -184,11 +184,12 @@ static void bb_ui_draw_measures_right(UIState *s, int bb_x, int bb_y, int bb_w )
   }
 
 
-
+/*
   //add grey panda GPS accuracy
   if (0) {
-    float  gpsAccuracyUblox = scene->gpsLocationExternal.getAccuracy();
-    float  altitudeUblox = scene->gpsLocationExternal.getAltitude();
+    auto gps_ext = scene->gpsLocationExternal;
+    float  gpsAccuracyUblox = gps_ext.getAccuracy();
+    float  altitudeUblox = gps_ext.getAltitude();
    // float  bearingUblox = data2.getBearingDeg();
 
     char val_str[16];
@@ -218,7 +219,7 @@ static void bb_ui_draw_measures_right(UIState *s, int bb_x, int bb_y, int bb_w )
     bb_ry = bb_y + bb_h;
   }
 
-/*
+
     //add altitude
   if (gpsAccuracyUblox != 0.00) {
     char val_str[16];
