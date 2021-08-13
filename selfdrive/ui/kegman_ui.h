@@ -282,7 +282,7 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w )
     char val_str[16];
     char uom_str[6];
     NVGcolor val_color = nvgRGBA(255, 255, 255, 200);
-    int status = scene->lead_data[0].getProb() > .2;// scene->lead_data[0].getStatus();
+    int status = scene->lead_data[0].getProb() > .5;// scene->lead_data[0].getStatus();
     if (status) {
       //show RED if less than 5 meters
       //show orange if less than 15 meters
@@ -311,7 +311,7 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w )
     char val_str[16];
     char uom_str[6];
     NVGcolor val_color = nvgRGBA(255, 255, 255, 200);
-    int status = scene->lead_data[0].getProb() > .2;// scene->lead_data[0].getStatus();
+    int status = scene->lead_data[0].getProb() > .5;// scene->lead_data[0].getStatus();
     if ( status ) {
       //show Orange if negative speed (approaching)
       //show Orange if negative speed faster than 5mph (approaching fast)
