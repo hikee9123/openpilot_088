@@ -208,6 +208,10 @@ static void update_state(UIState *s) {
 
 
   // atom 
+   if (sm.updated("gpsLocationExternal")) {
+    scene.gpsLocationExternal = sm["gpsLocationExternal"].getGpsLocationExternal();
+   }
+
    if (sm.updated("deviceState")) {
     scene.deviceState = sm["deviceState"].getDeviceState();
    }
