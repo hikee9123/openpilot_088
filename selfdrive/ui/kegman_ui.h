@@ -432,8 +432,8 @@ static void bb_ui_draw_UI(UIState *s)
   auto lead_one = (*s->sm)["modelV2"].getModelV2().getLeadsV3()[0];
 
   
-  ui_print(s, xpos, ypos+50, "P:%.1f", lead_one.prob()  );
+  ui_print(s, xpos, ypos+50, "P:%.1f", lead_one.getProb()  );
   ui_print(s, xpos, ypos+100, "Y:%.1f", lead_one.getY()[0]  );
-  ui_print(s, xpos, ypos+150, "Y:%.1f", lead_one.getV()[0]  );
+  ui_print(s, xpos, ypos+150, "V:%.1f", lead_one.getV()[0]  );
 }
 //BB END: functions added for the display of various items
