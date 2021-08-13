@@ -277,7 +277,7 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w )
   float angleSteers = scene->car_state.getSteeringAngleDeg();
   float angleSteersDes = scene->controls_state.getSteeringAngleDesiredDegDEPRECATED();
   //add visual radar relative distance
-  if( true )
+  if( 0 )
   {
     char val_str[16];
     char uom_str[6];
@@ -305,7 +305,7 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w )
   }
 
   //add visual radar relative speed
-  if( true )
+  if( 0 )
   {
     char val_str[16];
     char uom_str[6];
@@ -417,10 +417,9 @@ static void bb_ui_draw_UI(UIState *s)
   const int bb_dmr_x = 0 + s->fb_w - bb_dmr_w - bdr_s;
   const int bb_dmr_y = (0 + bdr_s) + 220;
 
-  if( 0 )
-    bb_ui_draw_measures_left(s, bb_dml_x, bb_dml_y, bb_dml_w);
+  bb_ui_draw_measures_left(s, bb_dml_x, bb_dml_y, bb_dml_w);
 
-    
+
   bb_ui_draw_measures_right(s, bb_dmr_x, bb_dmr_y, bb_dmr_w);
 }
 //BB END: functions added for the display of various items
