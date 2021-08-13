@@ -184,12 +184,13 @@ static void bb_ui_draw_measures_right(UIState *s, int bb_x, int bb_y, int bb_w )
   }
 
 
-/*
+
   //add grey panda GPS accuracy
   if (true) {
-    float  gpsAccuracyUblox = scene->gpsLocationExternal.getAccuracy();
-    float  altitudeUblox = scene->gpsLocationExternal.getAltitude();
-    float  bearingUblox = scene->gpsLocationExternal.getBearingDeg();   
+    auto data2 = (*s->sm)["gpsLocationExternal"].getGpsLocationExternal();
+    float  gpsAccuracyUblox = data2.getAccuracy();
+    float  altitudeUblox = data2.getAltitude();
+   // float  bearingUblox = data2.getBearingDeg();
 
     char val_str[16];
     char uom_str[3];
@@ -210,7 +211,7 @@ static void bb_ui_draw_measures_right(UIState *s, int bb_x, int bb_y, int bb_w )
     else {
       snprintf(val_str, sizeof(val_str), "%.2f", (gpsAccuracyUblox));
     }
-    snprintf(uom_str, sizeof(uom_str), "%d", (scene->satelliteCount));
+    snprintf(uom_str, sizeof(uom_str), "%d", altitudeUblox);
     bb_h +=bb_ui_draw_measure(s,  val_str, uom_str, "GPS PREC",
         bb_rx, bb_ry, bb_uom_dx,
         val_color, lab_color, uom_color,
@@ -218,6 +219,7 @@ static void bb_ui_draw_measures_right(UIState *s, int bb_x, int bb_y, int bb_w )
     bb_ry = bb_y + bb_h;
   }
 
+/*
     //add altitude
   if (gpsAccuracyUblox != 0.00) {
     char val_str[16];
