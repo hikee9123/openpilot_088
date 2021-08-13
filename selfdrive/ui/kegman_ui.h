@@ -282,17 +282,17 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w )
     NVGcolor val_color = nvgRGBA(255, 255, 255, 200);
     
     if (lead_one.getProb() > 0.5) {
-       float lead_d_rel1 = lead_one.getX()[0]; //  scene->lead_data[0].getX()[0];
+       float d_rel = lead_one.getX()[0]; //  scene->lead_data[0].getX()[0];
       //show RED if less than 5 meters
       //show orange if less than 15 meters
-      if((int)(lead_d_rel1) < 15) {
+      if((int)(d_rel) < 15) {
         val_color = nvgRGBA(255, 188, 3, 200);
       }
-      if((int)(lead_d_rel1) < 5) {
+      if((int)(d_rel) < 5) {
         val_color = nvgRGBA(255, 0, 0, 200);
       }
       // lead car relative distance is always in meters
-      snprintf(val_str, sizeof(val_str), "%d", (int)lead_d_rel1);
+      snprintf(val_str, sizeof(val_str), "%d", (int)d_rel);
     } else {
        snprintf(val_str, sizeof(val_str), "-");
     }
@@ -311,20 +311,20 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w )
     char uom_str[6];
     NVGcolor val_color = nvgRGBA(255, 255, 255, 200);
     if ( lead_one.getProb() > 0.5 ) {
-      float lead_v_rel1 = lead_one.getA()[0]; // scene->lead_data[0].getY()[0];
+      float v_rel = lead_one.getA()[0]; // scene->lead_data[0].getY()[0];
       //show Orange if negative speed (approaching)
       //show Orange if negative speed faster than 5mph (approaching fast)
-      if((int)(lead_v_rel1) < 0) {
+      if((int)(v_rel) < 0) {
         val_color = nvgRGBA(255, 188, 3, 200);
       }
-      if((int)(lead_v_rel1) < -5) {
+      if((int)(v_rel) < -5) {
         val_color = nvgRGBA(255, 0, 0, 200);
       }
       // lead car relative speed is always in meters
       if (scene->is_metric) {
-         snprintf(val_str, sizeof(val_str), "%d", (int)(lead_v_rel1 * 3.6 + 0.5));
+         snprintf(val_str, sizeof(val_str), "%d", (int)(v_rel * 3.6 + 0.5));
       } else {
-         snprintf(val_str, sizeof(val_str), "%d", (int)(lead_v_rel1 * 2.2374144 + 0.5));
+         snprintf(val_str, sizeof(val_str), "%d", (int)(v_rel * 2.2374144 + 0.5));
       }
     } else {
        snprintf(val_str, sizeof(val_str), "-");
@@ -419,8 +419,21 @@ static void bb_ui_draw_UI(UIState *s)
   const int bb_dmr_y = (0 + bdr_s) + 220;
 
   bb_ui_draw_measures_left(s, bb_dml_x, bb_dml_y, bb_dml_w);
-
-
   bb_ui_draw_measures_right(s, bb_dmr_x, bb_dmr_y, bb_dmr_w);
+
+
+  // 1. debug
+  int xpos = 250;
+  int ypos = 500;
+  nvgTextAlign(s->vg, NVG_ALIGN_LEFT | NVG_ALIGN_BASELINE);
+  nvgFontSize(s->vg, 40);
+  nvgFillColor(s->vg, nvgRGBA(255, 255, 255, 255));    
+
+  auto lead_one = (*s->sm)["modelV2"].getModelV2().getLeadsV3()[0];
+
+  
+  ui_print(s, xpos, ypos+50, "P:%.1f", lead_one.prob()  );
+  ui_print(s, xpos, ypos+100, "Y:%.1f", lead_one.getY()[0]  );
+  ui_print(s, xpos, ypos+150, "Y:%.1f", lead_one.getV()[0]  );
 }
 //BB END: functions added for the display of various items
