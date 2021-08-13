@@ -208,9 +208,9 @@ static void update_state(UIState *s) {
 
 
   // atom 
-   //if (sm.updated("gpsLocationExternal")) {
-   // scene.gpsLocationExternal = sm["gpsLocationExternal"].getGpsLocationExternal();
-  // }
+   if (sm.updated("gpsLocationExternal")) {
+    scene.gpsLocationExternal = sm["gpsLocationExternal"].getGpsLocationExternal();
+   }
 
    if (sm.updated("deviceState")) {
     scene.deviceState = sm["deviceState"].getDeviceState();
@@ -312,7 +312,7 @@ QUIState::QUIState(QObject *parent) : QObject(parent) {
   ui_state.sm = std::make_unique<SubMaster, const std::initializer_list<const char *>>({
     "modelV2", "controlsState", "liveCalibration", "deviceState", "roadCameraState",
     "pandaState", "carParams", "driverMonitoringState", "sensorEvents", "carState", "liveLocationKalman",
-    "liveNaviData", //"gpsLocationExternal",
+    "liveNaviData", "gpsLocationExternal",
   });
 
   ui_state.fb_w = vwp_w;

@@ -184,7 +184,7 @@ static void bb_ui_draw_measures_right(UIState *s, int bb_x, int bb_y, int bb_w )
   }
 
 
-/*
+
   //add grey panda GPS accuracy
   if (0) {
     auto gps_ext = scene->gpsLocationExternal;
@@ -219,7 +219,7 @@ static void bb_ui_draw_measures_right(UIState *s, int bb_x, int bb_y, int bb_w )
     bb_ry = bb_y + bb_h;
   }
 
-
+/*
     //add altitude
   if (gpsAccuracyUblox != 0.00) {
     char val_str[16];
