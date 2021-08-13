@@ -277,12 +277,13 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w )
   float angleSteers = scene->car_state.getSteeringAngleDeg();
   float angleSteersDes = scene->controls_state.getSteeringAngleDesiredDegDEPRECATED();
   //add visual radar relative distance
-  if( 0 )
+  if( true )
   {
     char val_str[16];
     char uom_str[6];
     NVGcolor val_color = nvgRGBA(255, 255, 255, 200);
-    //if (scene->lead_data[0].getStatus()) {
+    int status = 1;// scene->lead_data[0].getStatus();
+    if (status) {
       //show RED if less than 5 meters
       //show orange if less than 15 meters
       if((int)(lead_d_rel1) < 15) {
@@ -293,9 +294,9 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w )
       }
       // lead car relative distance is always in meters
       snprintf(val_str, sizeof(val_str), "%d", (int)lead_d_rel1);
-    //} else {
-    //   snprintf(val_str, sizeof(val_str), "-");
-    //}
+    } else {
+       snprintf(val_str, sizeof(val_str), "-");
+    }
     snprintf(uom_str, sizeof(uom_str), "m   ");
     bb_h +=bb_ui_draw_measure(s,  val_str, uom_str, "REL DIST",
         bb_rx, bb_ry, bb_uom_dx,
