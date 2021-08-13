@@ -141,20 +141,7 @@ static int hyundai_community_rx_hook(CAN_FIFOMailBox_TypeDef *to_push) {
         }
         cruise_engaged_prev = cruise_engaged;
       }
-    /* 
-      // enter controls on rising edge of ACC, exit controls on ACC off
-      if (addr == 1057) {  // SCC12
-        // 2 bits: 13-14
-        int cruise_engaged = (GET_BYTES_04(to_push) >> 13) & 0x3; // ACCMode
-        if (cruise_engaged && !cruise_engaged_prev) {
-          controls_allowed = 1;
-        }
-        if (!cruise_engaged) {
-          controls_allowed = 0;
-        }
-        cruise_engaged_prev = cruise_engaged;
-      }
-    */
+
 
     // read gas pressed signal
     if ((addr == 881) && hyundai_community_ev_gas_signal) {
