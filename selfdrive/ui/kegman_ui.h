@@ -269,10 +269,10 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w )
   int uom_fontSize = 15;
   int bb_uom_dx =  (int)(bb_w /2 - uom_fontSize*2.5) ;
 
+  auto lead_one = (*s->sm)["modelV2"].getModelV2().getLeadsV3()[0];
 
-
-  float lead_d_rel1 = scene->lead_data[0].getX()[0];
-  float lead_v_rel1 = scene->lead_data[0].getY()[0];
+  float lead_d_rel1 = lead_one.getX()[0]; //  scene->lead_data[0].getX()[0];
+  float lead_v_rel1 = lead_one.getV()[0]; // scene->lead_data[0].getY()[0];
 
   float angleSteers = scene->car_state.getSteeringAngleDeg();
   float angleSteersDes = scene->controls_state.getSteeringAngleDesiredDegDEPRECATED();
@@ -282,7 +282,7 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w )
     char val_str[16];
     char uom_str[6];
     NVGcolor val_color = nvgRGBA(255, 255, 255, 200);
-    int status = scene->lead_data[0].getProb() > .5;// scene->lead_data[0].getStatus();
+    int status = lead_one.getProb() > .5; // scene->lead_data[0].getProb() > .5;// scene->lead_data[0].getStatus();
     if (status) {
       //show RED if less than 5 meters
       //show orange if less than 15 meters
@@ -311,7 +311,7 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w )
     char val_str[16];
     char uom_str[6];
     NVGcolor val_color = nvgRGBA(255, 255, 255, 200);
-    int status = scene->lead_data[0].getProb() > .5;// scene->lead_data[0].getStatus();
+    int status = lead_one.getProb() > .5;  // scene->lead_data[0].getProb() > .5;// scene->lead_data[0].getStatus();
     if ( status ) {
       //show Orange if negative speed (approaching)
       //show Orange if negative speed faster than 5mph (approaching fast)
