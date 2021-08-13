@@ -186,7 +186,7 @@ static void bb_ui_draw_measures_right(UIState *s, int bb_x, int bb_y, int bb_w )
 
 
   //add grey panda GPS accuracy
-  if (0) {
+  if (true) {
     auto gps_ext = scene->gpsLocationExternal;
     float  gpsAccuracyUblox = gps_ext.getAccuracy();
     float  altitudeUblox = gps_ext.getAltitude();
