@@ -9,8 +9,6 @@
 #include "selfdrive/common/util.h"
 #include "selfdrive/common/params.h"
 
-
-
 /*
 MAPPY
     signtype
