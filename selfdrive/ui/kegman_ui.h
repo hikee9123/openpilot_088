@@ -186,7 +186,7 @@ static void bb_ui_draw_measures_right(UIState *s, int bb_x, int bb_y, int bb_w )
 
 
   //add grey panda GPS accuracy
-  if (true) {
+  if (0) {
     float  gpsAccuracyUblox = scene->gpsLocationExternal.getAccuracy();
     float  altitudeUblox = scene->gpsLocationExternal.getAltitude();
    // float  bearingUblox = data2.getBearingDeg();
@@ -205,10 +205,10 @@ static void bb_ui_draw_measures_right(UIState *s, int bb_x, int bb_y, int bb_w )
     if(gpsAccuracyUblox > 99 || gpsAccuracyUblox == 0) {
        snprintf(val_str, sizeof(val_str), "None");
     }else if(gpsAccuracyUblox > 9.99) {
-      snprintf(val_str, sizeof(val_str), "%.1f", (gpsAccuracyUblox));
+      snprintf(val_str, sizeof(val_str), "%.1f", gpsAccuracyUblox);
     }
     else {
-      snprintf(val_str, sizeof(val_str), "%.2f", (gpsAccuracyUblox));
+      snprintf(val_str, sizeof(val_str), "%.2f", gpsAccuracyUblox);
     }
     snprintf(uom_str, sizeof(uom_str), "%.1f", altitudeUblox);
     bb_h +=bb_ui_draw_measure(s,  val_str, uom_str, "GPS PREC",
