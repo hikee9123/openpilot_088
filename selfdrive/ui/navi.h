@@ -45,10 +45,10 @@ static void ui_draw_traffic_sign(UIState *s, float map_sign, float speedLimit,  
 
     int  nTrafficSign = int( map_sign );
 
-    if( nTrafficSign == 113 ) traffic_sign = name_sped[1];  // 굽은도로
-    else if( nTrafficSign == 195 ) traffic_sign = name_sped[0];  // 가변 단속. ( by opkr)
-    else if( nTrafficSign == 246 ) traffic_sign = name_sign[1];  // 버스전용차로단속
-    else if( nTrafficSign == 124 ) traffic_sign = name_sign[0];  // 과속방지턱
+    if( nTrafficSign == TS_BEND_ROAD ) traffic_sign = name_sped[1];  // 굽은도로
+    else if( nTrafficSign == TS_INTERVAL ) traffic_sign = name_sped[0];  // 가변 단속. ( by opkr)
+    else if( nTrafficSign == TS_BUS_ONLY ) traffic_sign = name_sign[1];  // 버스전용차로단속
+    else if( nTrafficSign == TS_BUMP_ROAD ) traffic_sign = name_sign[0];  // 과속방지턱
     else if( speedLimit <= 10 )  traffic_sign = NULL;
     else if( speedLimit <= 30 )  traffic_sign = name_sped[3];
     else if( speedLimit <= 40 )  traffic_sign = name_sped[4];
@@ -103,13 +103,13 @@ static void ui_draw_traffic_sign(UIState *s, float map_sign, float speedLimit,  
 
 
 
-    if( nTrafficSign == 131 ) szSign = "신호위반";
-    else if( nTrafficSign == 165 ) szSign = "구간단속";
-    else if( nTrafficSign == 195 ) szSign = "가변구간";
-    else if( nTrafficSign == 200 ) szSign = "이동식";
-    else if( nTrafficSign == 231 ) szSign = "카메라";
-    else if( nTrafficSign == 248 ) szSign = "교통정보";
-    else if( nTrafficSign == 113 ) szSign = "굽은도로";
+    if( nTrafficSign == TS_CAMERA1 ) szSign = "신호위반";
+    else if( nTrafficSign == TS_INTERVAL ) szSign = "구간단속";
+    else if( nTrafficSign == TS_VARIABLE ) szSign = "가변구간";
+    else if( nTrafficSign == TS_CAMERA4 ) szSign = "이동식";
+    else if( nTrafficSign == TS_CAMERA5 ) szSign = "카메라";
+    else if( nTrafficSign == TS_TRAFFIC_INFO ) szSign = "교통정보";
+    else if( nTrafficSign == TS_BEND_ROAD ) szSign = "굽은도로";
     
     
 
@@ -122,17 +122,17 @@ static void ui_draw_traffic_sign(UIState *s, float map_sign, float speedLimit,  
       char  szSignal[50];
       int   nFontSize = 30;
 
-      if( nTrafficSign == 111 ) szSign = "우측커브";
-      else if( nTrafficSign == 112 ) szSign = "좌측커브";
-      else if( nTrafficSign == 123 ) szSign = "철길건널목";
-      else if( nTrafficSign == 124 ) szSign = "과속방지턱";
-      else if( nTrafficSign == 129 ) szSign = "주정차금지";
-      else if( nTrafficSign == 118 ) szSign = "어린이보호";
-      else if( nTrafficSign == 127 ) szSign = "어린이보호";
-      else if( nTrafficSign == 122 ) szSign = "좁아지는도로";
-      else if( nTrafficSign == 246 ) szSign = "버스전용차로";
-      else if( nTrafficSign == 249 ) szSign = "추월금지구간";
-      else if( nTrafficSign == 250 ) szSign = "갓길단속";
+      if( nTrafficSign == TS_CURVE_RIGHT ) szSign = "우측커브";
+      else if( nTrafficSign == TS_CURVE_LEFT ) szSign = "좌측커브";
+      else if( nTrafficSign == TS_RAIL_ROAD ) szSign = "철길건널목";
+      else if( nTrafficSign == TS_BUMP_ROAD ) szSign = "과속방지턱";
+      else if( nTrafficSign == TS_PARK_CRACKDOWN ) szSign = "주정차금지";
+      else if( nTrafficSign == TS_SCHOOL_ZONE1 ) szSign = "스쿨존#1";
+      else if( nTrafficSign == TS_SCHOOL_ZONE2 ) szSign = "스쿨존#2";
+      else if( nTrafficSign == TS_NARROW_ROAD ) szSign = "좁아지는도로";
+      else if( nTrafficSign == TS_BUS_ONLY ) szSign = "버스전용차로";
+      else if( nTrafficSign == TS_OVERTRAK ) szSign = "추월금지구간";
+      else if( nTrafficSign == TS_SHOULDER ) szSign = "갓길단속";
       else {
         nFontSize = 73;
         szSign = szSignal;

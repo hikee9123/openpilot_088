@@ -36,12 +36,14 @@ typedef enum TrafficSign {
   TS_SCHOOL_ZONE1 = 118,  // 어린이보호구역
   TS_SCHOOL_ZONE2 = 127,  // 어린이보호구역
   TS_NARROW_ROAD = 122,   // 좁아지는 도로
+  TS_RAIL_ROAD = 123,     // 철길건널목
   TS_BUMP_ROAD =  124,  // 과속방지턱
   TS_PARK_CRACKDOWN  = 129,  // 주정차단속
   TS_CAMERA1  = 131,  // 단속카메라(신호위반카메라)  
   TS_CAMERA2  = 135,  // 고정식  - 호야
   TS_CAMERA3  = 150,  // 경찰차(이동식)  - 호야
-  TS_INTERVAL  = 165,  // 구간 단속    
+  TS_INTERVAL  = 165,  // 구간 단속
+  TS_VARIABLE  = 195,  // 가변구간
   TS_LANE_CHANGE1  = 198,  // 차선변경금지시작
   TS_ANE_CHANGE2  = 199,  // 차선변경금지종료
   TS_PARK_ZONE  = 129,  // 주정차금지구간
