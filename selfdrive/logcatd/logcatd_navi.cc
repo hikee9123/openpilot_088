@@ -132,7 +132,7 @@ int main() {
 
       struct timeval t;
       gettimeofday(&t, NULL);
-      dCurrentSec = t.tv_sec + 1.0e-9*t.tv_usec;
+      dCurrentSec = t.tv_sec + 1.0e-6*t.tv_usec;
   
       log_msg log_msg;
       int err = android_logger_list_read(logger_list, &log_msg);
@@ -145,7 +145,7 @@ int main() {
       last_log_time.tv_sec = entry.tv_sec;
       last_log_time.tv_nsec = entry.tv_nsec;
 
-      dCurrentSec = entry.tv_sec + 1.0e-9*entry.tv_usec;
+      dCurrentSec = entry.tv_sec + 1.0e-9*entry.tv_nsec;
       printf("[%.1f]sec logcat ID(%d) - PID=%d tag=%d.[%s] \n", dCurrentSec, log_msg.id(),  entry.pid,  entry.tid, entry.tag);
 
       dSpeed_kph = dSpeed_ms * 3.5;
