@@ -56,15 +56,6 @@ int traffic_camera( int nsignal_type, float fDistance )
     return ret_code;
 }
 
-long  nsec2msec( AndroidLogEntry entry )
-{
-    long msec;
-
-    double  tv_msec2 = entry.tv_nsec / 1000000;
-    msec =  entry.tv_sec * 1000ULL + long(tv_msec2);
-    return msec;
-}
-
 // return sec
 float arrival_time( float fDistance, float fSpeed_ms )
 {
@@ -147,6 +138,7 @@ int main() {
       int err = android_logger_list_read(logger_list, &log_msg);
       if (err <= 0) break;
 
+      printf("dCurrentSec = [%.1f]sec  \n", dCurrentSec;
       AndroidLogEntry entry;
       err = android_log_processLogBuffer(&log_msg.entry_v1, &entry);
       if (err < 0) continue;
