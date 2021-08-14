@@ -101,7 +101,7 @@ int main() {
   int      traffic_type;
   int      opkr =0;
   float    dSpeed_kph;
-  double   dStopSec = 1;
+  double   dArrivalDistanceStop = 0;
 
   double  dEventLastSec;
   double  dCurrentSec;
@@ -201,15 +201,16 @@ int main() {
         if( dSpeed_ms > 1.0 )
         {
           dEventLastSec = dCurrentSec - event.dEventSec;  // 마지막 Event Time
-          dStopSec = event.dHideTimeSec - dCurrentSec;
-          event.dArrivalTimeSec = dStopSec;
+          event.dArrivalTimeSec = event.dHideTimeSec - dCurrentSec;
           event.dArrivalDistance =  event.dArrivalTimeSec * dSpeed_ms;
+          dArrivalDistanceStop = event.dArrivalDistance;
           if( dEventLastSec > 3 )   opkr = 0;
           else if( event.dArrivalTimeSec < 2 )  opkr = 0;
         }
         else
         {
-          event.dHideTimeSec = dCurrentSec + dStopSec;
+          event.dEventSec = dCurrentSec;
+          update_event( &event, dSpeed_ms );          
         }       
       }
       else
