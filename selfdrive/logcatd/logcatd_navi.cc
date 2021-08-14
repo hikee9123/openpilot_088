@@ -138,14 +138,14 @@ int main() {
       int err = android_logger_list_read(logger_list, &log_msg);
       if (err <= 0) break;
 
-      printf("dCurrentSec = [%.1f]sec  \n", dCurrentSec;
+      printf("dCurrentSec = [%.1f]sec  \n", dCurrentSec );
       AndroidLogEntry entry;
       err = android_log_processLogBuffer(&log_msg.entry_v1, &entry);
       if (err < 0) continue;
       last_log_time.tv_sec = entry.tv_sec;
       last_log_time.tv_nsec = entry.tv_nsec;
 
-
+      dCurrentSec = entry.tv_sec + 1.0e-9*entry.tv_usec;
       printf("[%.1f]sec logcat ID(%d) - PID=%d tag=%d.[%s] \n", dCurrentSec, log_msg.id(),  entry.pid,  entry.tid, entry.tag);
 
       dSpeed_kph = dSpeed_ms * 3.5;
