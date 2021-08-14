@@ -100,7 +100,6 @@ int main() {
   long     nLastTime = 0;
   int      traffic_type;
   int      opkr =0;
-  float    dSpeed_kph;
   double   dArrivalDistanceStop = 0;
 
   double  dEventLastSec;
@@ -138,7 +137,7 @@ int main() {
       int err = android_logger_list_read(logger_list, &log_msg);
       if (err <= 0) break;
 
-      //printf("dCurrentSec = [%.1f]sec  \n", dCurrentSec );
+
       AndroidLogEntry entry;
       err = android_log_processLogBuffer(&log_msg.entry_v1, &entry);
       if (err < 0) continue;
@@ -146,9 +145,6 @@ int main() {
       last_log_time.tv_nsec = entry.tv_nsec;
 
       dCurrentSec = entry.tv_sec + 1.0e-9*entry.tv_nsec;
-      //printf("[%.1f]sec logcat ID(%d) - PID=%d tag=%d.[%s] \n", dCurrentSec, log_msg.id(),  entry.pid,  entry.tid, entry.tag);
-
-      dSpeed_kph = dSpeed_ms * 3.5;
       long nDelta2;
       nDelta2 = entry.tv_sec - nLastTime;
       if( nDelta2 >= 5 )
@@ -164,7 +160,6 @@ int main() {
       {
         event.speedLimitDistance = atoi( entry.message );
         opkr = 1;
-      //  update_event( &event, dSpeed_ms );
       }      
       else if( strcmp( entry.tag, "opkrspdlimit" ) == 0 ) // 2
       {
@@ -246,8 +241,8 @@ int main() {
 
       if( opkr )
       {
-       printf("[%.1f]sec logcat ID(%d) - PID=%d tag=%d.[%s] \n", dCurrentSec, log_msg.id(),  entry.pid,  entry.tid, entry.tag);
-       printf("entry.message=[%s]   sec=[%.1f]sec dist=[%.1f]m  [%.1f]\n", entry.message, event.dArrivalTimeSec, event.dArrivalDistance, dSpeed_ms );
+       printf("logcat ID(%d) - PID=%d tag=%d.[%s] \n", log_msg.id(),  entry.pid,  entry.tid, entry.tag);
+       printf("entry.message=[%s]  \n", entry.message );
       }
 
       pm.send("liveNaviData", msg);
