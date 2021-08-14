@@ -43,7 +43,7 @@ class CarInterface(CarInterfaceBase):
       ret.lateralTuning.pid.kpBP, ret.lateralTuning.pid.kpV = [[0.], [0.15]]
       ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kiV = [[0.], [0.01]]
 
-      
+      """
       ret.lateralTuning.init('lqr')
       ret.lateralTuning.lqr.scale = 1700     #1700.0
       ret.lateralTuning.lqr.ki = 0.01       #0.01
@@ -51,7 +51,6 @@ class CarInterface(CarInterfaceBase):
       # 호야  1500, 0.015, 0.0027
       #  1700, 0.01, 0.0029
       #  2000, 0.01, 0.003
-
       ret.lateralTuning.lqr.a = [0., 1., -0.22619643, 1.21822268]
       ret.lateralTuning.lqr.b = [-1.92006585e-04, 3.95603032e-05]
       ret.lateralTuning.lqr.c = [1., 0.]
@@ -67,7 +66,7 @@ class CarInterface(CarInterfaceBase):
       ret.lateralTuning.indi.timeConstantV = [1.4]               # 2. 중앙 조정
       ret.lateralTuning.indi.actuatorEffectivenessBP = [0.]
       ret.lateralTuning.indi.actuatorEffectivenessV = [3.3]      # 1. 낮을수록 코너를 잘돔.  (직진 와리 가리 조정)
-      """
+      
     elif candidate == CAR.SANTA_FE:
       ret.lateralTuning.pid.kf = 0.00005
       ret.mass = 3982. * CV.LB_TO_KG + STD_CARGO_KG
