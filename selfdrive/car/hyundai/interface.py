@@ -65,7 +65,7 @@ class CarInterface(CarInterfaceBase):
       ret.lateralTuning.indi.timeConstantBP = [0.]
       ret.lateralTuning.indi.timeConstantV = [1.4]               # 2. 중앙 조정
       ret.lateralTuning.indi.actuatorEffectivenessBP = [0.]
-      ret.lateralTuning.indi.actuatorEffectivenessV = [3.3]      # 1. 낮을수록 코너를 잘돔.  (직진 와리 가리 조정)
+      ret.lateralTuning.indi.actuatorEffectivenessV = [5.3]      # 1. 낮을수록 코너를 잘돔.  (직진 와리 가리 조정)
       
     elif candidate == CAR.SANTA_FE:
       ret.lateralTuning.pid.kf = 0.00005
