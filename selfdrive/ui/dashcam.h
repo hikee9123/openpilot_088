@@ -37,6 +37,8 @@ struct tm get_time_struct()
   return tm;
 }
 
+
+
 static int get_time()
 {
   int iRet;

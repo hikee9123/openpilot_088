@@ -9,62 +9,7 @@
 #include "selfdrive/common/util.h"
 #include "selfdrive/common/params.h"
 
-/*
-MAPPY
-    signtype
-    111 오른쪽 급커브
-    112 왼쪽 급커브
-    113 굽은도로
-    118, 127 어린이보호구역
-    122 : 좁아지는 도로
-    124 : 과속방지턱
-    129 : 주정차
-    131 : 단속카메라(신호위반카메라)  
-    135 : 고정식  - 호야
-    150 : 경찰차(이동식)  - 호야
-    165 : 구간단속    
-    198 차선변경금지시작
-    199 차선변경금지종료
-    129 주정차금지구간
-    123 철길건널목
-    200 : 단속구간(고정형 이동식)
-    231 : 단속(카메라, 신호위반)    
-    246 버스전용차로단속
-    247 과적단속
-    248 교통정보수집
-    249 추월금지구간
-    250 갓길단속
-    251 적재불량단속
-*/
-
-
-typedef enum TrafficSign {
-  TS_CURVE_RIGHT = 111,  // 오른쪽 급커브
-  TS_CURVE_LEFT = 112,   // 왼쪽 급커브
-  TS_BEND_ROAD = 113,    // 굽은도로
-  TS_SCHOOL_ZONE1 = 118,  // 어린이보호구역
-  TS_SCHOOL_ZONE2 = 127,  // 어린이보호구역
-  TS_NARROW_ROAD = 122,   // 좁아지는 도로
-  TS_BUMP_ROAD =  124,  // 과속방지턱
-  TS_PARK_CRACKDOWN  = 129,  // 주정차단속
-  TS_CAMERA1  = 131,  // 단속카메라(신호위반카메라)  
-  TS_CAMERA2  = 135,  // 고정식  - 호야
-  TS_CAMERA3  = 150,  // 경찰차(이동식)  - 호야
-  TS_INTERVAL  = 165,  // 구간 단속    
-  TS_LANE_CHANGE1  = 198,  // 차선변경금지시작
-  TS_ANE_CHANGE2  = 199,  // 차선변경금지종료
-  TS_PARK_ZONE  = 129,  // 주정차금지구간
-  TS_RAILROAD  = 123,  // 철길건널목
-  TS_CAMERA4  = 200,  // 단속구간(고정형 이동식)
-  TS_CAMERA5  = 231,  // 단속(카메라, 신호위반)    
-  TS_BUS_ONLY  = 246,  // 버스전용차로단속
-  TS_LOAD_OVER  = 247,  // 과적단속
-  TS_TRAFFIC_INFO  = 248,  // 교통정보수집
-  TS_OVERTRAK  = 249,  // 추월금지구간
-  TS_SHOULDER  = 250,  // 갓길단속
-  TS_LOAD_POOR  = 251,  // 적재불량단속  
-} TrafficSign;
-
+#include "selfdrive/logcatd/traffic_sign.h"
 
 typedef struct LiveNaviDataResult {
       float speedLimit;  // Float32;
@@ -93,14 +38,16 @@ int traffic_camera( int nsignal_type, float fDistance )
 
     switch( nsignal_type )
     {
-      case  131:  // 단속(카메라, 신호위반)    
-      case  248:  // 교통정보수집
-      case  200:  // 단속구간(고정형 이동식)
-      case  231:  // 단속(카메라, 신호위반)
+      case  TS_CAMERA1:  // 단속(카메라, 신호위반) 
+      case  TS_CAMERA2:
+      case  TS_CAMERA3:
+      case  TS_CAMERA4:  // 단속구간(고정형 이동식)
+      case  TS_CAMERA5:  // 단속(카메라, 신호위반)
+      case  TS_TRAFFIC_INFO:  // 교통정보수집
         ret_code = 1;
         break;
 
-      case  165:  // 구간단속
+      case  TS_INTERVAL:  // 구간단속
         if(fDistance < 800)
             ret_code = 1;
         break;
@@ -159,14 +106,14 @@ void update_event(  LiveNaviDataResult *pEvet, float  dSpeed_ms )
 
 int main() {
   setpriority(PRIO_PROCESS, 0, -15);
-  long  nLastTime = 0, nDelta2 = 0;
-  int   traffic_type;
-  int     opkr =0;
-  long    tv_msec;
-  float   dSpeed_kph;
+  long     nLastTime = 0;
+  int      traffic_type;
+  int      opkr =0;
+  float    dSpeed_kph;
   double   dStopSec = 1;
-  double  dCurTime;
+
   double  dEventLastSec;
+  double  dCurrentSec;
 
   ExitHandler do_exit;
   PubMaster pm({"liveNaviData"});
@@ -192,6 +139,9 @@ int main() {
       sm.update(0);
       const float dSpeed_ms = sm["carState"].getCarState().getVEgo();
 
+      struct timeval t;
+      gettimeofday(&t, NULL);
+      dCurrentSec = t.tv_sec + 1.0e-9*t.tv_usec;
   
       log_msg log_msg;
       int err = android_logger_list_read(logger_list, &log_msg);
@@ -200,18 +150,14 @@ int main() {
       AndroidLogEntry entry;
       err = android_log_processLogBuffer(&log_msg.entry_v1, &entry);
       if (err < 0) continue;
-
-      dSpeed_kph = dSpeed_ms * 3.5;
-
       last_log_time.tv_sec = entry.tv_sec;
       last_log_time.tv_nsec = entry.tv_nsec;
 
-      // 1. Time.
-      tv_msec = nsec2msec( entry );
-      dCurTime = tv_msec * 0.001;  // msec => sec
-      event.tv_sec = entry.tv_sec;
 
+      printf("[%.1f]sec logcat ID(%d) - PID=%d tag=%d.[%s] \n", dCurrentSec, log_msg.id(),  entry.pid,  entry.tid, entry.tag);
 
+      dSpeed_kph = dSpeed_ms * 3.5;
+      long nDelta2;
       nDelta2 = entry.tv_sec - nLastTime;
       if( nDelta2 >= 5 )
       {
@@ -242,7 +188,7 @@ int main() {
       {
         event.safetySign = atoi( entry.message );
         opkr = 4;
-        event.dEventSec = dCurTime;
+        event.dEventSec = dCurrentSec;
         update_event( &event, dSpeed_ms );
       }
       else if( strcmp( entry.tag, "opkrturninfo" ) == 0 )
@@ -262,8 +208,8 @@ int main() {
       {
         if( dSpeed_ms > 1.0 )
         {
-          dEventLastSec = dCurTime - event.dEventSec;  // 마지막 Event Time
-          dStopSec = event.dHideTimeSec - dCurTime;
+          dEventLastSec = dCurrentSec - event.dEventSec;  // 마지막 Event Time
+          dStopSec = event.dHideTimeSec - dCurrentSec;
           event.dArrivalTimeSec = dStopSec;
           event.dArrivalDistance =  event.dArrivalTimeSec * dSpeed_ms;
           if( dEventLastSec > 3 )   opkr = 0;
@@ -271,12 +217,12 @@ int main() {
         }
         else
         {
-          event.dHideTimeSec = dCurTime + dStopSec;
+          event.dHideTimeSec = dCurrentSec + dStopSec;
         }       
       }
       else
       {
-        event.dHideTimeSec = dCurTime + 3;
+        event.dHideTimeSec = dCurrentSec + 3;
       }
 
       if ( opkr )
@@ -307,7 +253,7 @@ int main() {
 
       if( opkr )
       {
-       printf("[%.1f]sec logcat ID(%d) - PID=%d tag=%d.[%s] \n", dCurTime, log_msg.id(),  entry.pid,  entry.tid, entry.tag);
+       printf("[%.1f]sec logcat ID(%d) - PID=%d tag=%d.[%s] \n", dCurrentSec, log_msg.id(),  entry.pid,  entry.tid, entry.tag);
        printf("entry.message=[%s]   sec=[%.1f]sec dist=[%.1f]m  [%.1f]\n", entry.message, event.dArrivalTimeSec, event.dArrivalDistance, dSpeed_ms );
       }
 

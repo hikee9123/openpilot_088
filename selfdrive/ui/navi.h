@@ -3,6 +3,9 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
+
+#include "selfdrive/logcatd/traffic_sign.h"
+
 /*
 this is navigation code by OPKR, and thank you to the OPKR developer.
 I love OPKR code.
