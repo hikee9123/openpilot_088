@@ -193,24 +193,24 @@ int main() {
       // 3. Message hide process.
       if( opkr )
       {
-        if( dSpeed_ms > 1.0 )
+        if( dSpeed_ms > 2.0 )
         {
           dEventLastSec = dCurrentSec - event.dEventSec;  // 마지막 Event Time
           event.dArrivalTimeSec = event.dHideTimeSec - dCurrentSec;
           event.dArrivalDistance =  event.dArrivalTimeSec * dSpeed_ms;
           dArrivalDistanceStop = event.dArrivalDistance;
           if( dEventLastSec > 3 )   opkr = 0;
-          else if( event.dArrivalTimeSec < 2 )  opkr = 0;
+          else if( event.dArrivalTimeSec < 1.5 )  opkr = 0;
         }
         else
         {
           event.dEventSec = dCurrentSec;
-          update_event( &event, dSpeed_ms );          
+          update_event( &event, 2.0 );          
         }       
       }
       else
       {
-        event.dHideTimeSec = dCurrentSec + 3;
+        event.dHideTimeSec = dCurrentSec + 5;
       }
 
       if ( opkr )
