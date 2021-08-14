@@ -196,10 +196,10 @@ static void bb_ui_draw_measures_right(UIState *s, int bb_x, int bb_y, int bb_w )
     char uom_str[3];
     NVGcolor val_color = nvgRGBA(255, 255, 255, 200);
     //show red/orange if gps accuracy is low
-      if(gpsAccuracyUblox > 1.0) {
+      if(gpsAccuracyUblox > 2.0) {
          val_color = nvgRGBA(255, 188, 3, 200);
       }
-      if(gpsAccuracyUblox > 2.0) {
+      if(gpsAccuracyUblox > 5.0) {
          val_color = nvgRGBA(255, 0, 0, 200);
       }
     // gps accuracy is always in meters
