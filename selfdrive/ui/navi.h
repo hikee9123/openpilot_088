@@ -46,7 +46,7 @@ static void ui_draw_traffic_sign(UIState *s, float map_sign, float speedLimit,  
     int  nTrafficSign = int( map_sign );
 
     if( nTrafficSign == TS_BEND_ROAD ) traffic_sign = name_sped[1];  // 굽은도로
-    else if( nTrafficSign == TS_INTERVAL ) traffic_sign = name_sped[0];  // 가변 단속. ( by opkr)
+    else if( nTrafficSign == TS_VARIABLE ) traffic_sign = name_sped[0];  // 가변 단속. ( by opkr)
     else if( nTrafficSign == TS_BUS_ONLY ) traffic_sign = name_sign[1];  // 버스전용차로단속
     else if( nTrafficSign == TS_BUMP_ROAD ) traffic_sign = name_sign[0];  // 과속방지턱
     else if( speedLimit <= 10 )  traffic_sign = NULL;
