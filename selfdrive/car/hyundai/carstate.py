@@ -334,7 +334,7 @@ class CarState(CarStateBase):
       ("SCC11", 50),
       ("SCC12", 50),
 
-      ("TPMS11", 5),
+      #("TPMS11", 5),
     ]
 
 
