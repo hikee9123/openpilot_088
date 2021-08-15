@@ -437,7 +437,7 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w )
 
 
 // TPMS code added from OPKR
-static void ui_draw_tpms(UIState *s, int x, int y, float tmps) {
+static void draw_tpms(UIState *s, int x, int y, float tmps) {
   NVGcolor color = COLOR_WHITE_ALPHA(200);
   if ( tmps < 34) {
     color = COLOR_RED;
@@ -450,7 +450,7 @@ static void ui_draw_tpms(UIState *s, int x, int y, float tmps) {
   bb_ui_text( s, x, y, tpmsFl, 60, color, "sans-semibold");
 }
 
-static void ui_draw_tpms(UIState *s, int viz_tpms_x, int viz_tpms_y) {
+static void bb_draw_tpms(UIState *s, int viz_tpms_x, int viz_tpms_y) {
   UIScene &scene = s->scene;
 
   int viz_tpms_w = 230;
@@ -491,12 +491,12 @@ static void ui_draw_tpms(UIState *s, int viz_tpms_x, int viz_tpms_y) {
   const int pos_y = viz_tpms_y + 45;
   bb_ui_text(s, pos_x, pos_y, "TPMS(psi)", 45, COLOR_WHITE_ALPHA(180), "sans-regular");
 
-  ui_draw_tpms( s, pos_x-55, pos_y+50, fl );
-  ui_draw_tpms( s, pos_x+55, pos_y+50, fr );
-  ui_draw_tpms( s, pos_x-55, pos_y+100, rl );
-  ui_draw_tpms( s, pos_x+55, pos_y+100, rl );
-
+  draw_tpms( s, pos_x-55, pos_y+50, fl );
+  draw_tpms( s, pos_x+55, pos_y+50, fr );
+  draw_tpms( s, pos_x-55, pos_y+100, rl );
+  draw_tpms( s, pos_x+55, pos_y+100, rl );
 }
+
 
 static void bb_ui_draw_UI(UIState *s)
 {
@@ -516,7 +516,7 @@ static void bb_ui_draw_UI(UIState *s)
   // 2. tpms
   int viz_tpms_x = s->fb_w - (bdr_s+425);
   int viz_tpms_y = bdr_s;
-  ui_draw_tpms( s, viz_tpms_x, viz_tpms_y );
+  bb_draw_tpms( s, viz_tpms_x, viz_tpms_y );
 
   // 3. debug
   int xpos = 250;
