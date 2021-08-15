@@ -448,6 +448,7 @@ static void print_tpms(UIState *s, int x, int y, float tmps) {
   } 
 
   if ( tmps >= 250 || tmps <= 0 )  {
+    color = COLOR_WHITE_ALPHA(200);
     snprintf(szTPMS, sizeof(szTPMS), "-" );
   }  else  {
     snprintf(szTPMS, sizeof(szTPMS), "%.1f", tmps );
@@ -520,7 +521,7 @@ static void bb_ui_draw_UI(UIState *s)
 
   // 2. tpms
   int viz_tpms_x = s->fb_w - (bdr_s+425);
-  int viz_tpms_y = bdr_s + 45;
+  int viz_tpms_y = bdr_s + 40;
   bb_draw_tpms( s, viz_tpms_x, viz_tpms_y );
 
   // 3. debug
