@@ -439,14 +439,26 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w )
 // TPMS code added from OPKR
 static void draw_tpms(UIState *s, int x, int y, float tmps) {
   NVGcolor color = COLOR_WHITE_ALPHA(200);
-  if ( tmps < 34) {
+  char tpmsFl[64];
+
+  if ( tmps < 34) 
+  {
     color = COLOR_RED;
-  } else if (tmps > 50) {
+  } 
+  else if (tmps > 50) 
+  {
     color =  COLOR_WHITE_ALPHA(200);
   } 
 
-  char tpmsFl[64];
-  snprintf(tpmsFl, sizeof(tpmsFl), "%.1f", tmps );
+  if ( tpms >= 250 || tpms <= 0 )
+  {
+    snprintf(tpmsFl, sizeof(tpmsFl), "N/A" );
+  }
+  else
+  {
+    snprintf(tpmsFl, sizeof(tpmsFl), "%.1f", tmps );
+  }
+  
   bb_ui_text( s, x, y, tpmsFl, 60, color, "sans-semibold");
 }
 
@@ -490,8 +502,8 @@ static void bb_draw_tpms(UIState *s, int viz_tpms_x, int viz_tpms_y) {
 
   nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE);
   const int pos_x = viz_tpms_x + (viz_tpms_w / 2);
-  const int pos_y = viz_tpms_y + 45;
-  bb_ui_text(s, pos_x, pos_y, "TPMS(psi)", 45, COLOR_WHITE_ALPHA(180), "sans-regular");
+  const int pos_y = viz_tpms_y + 30;
+  bb_ui_text(s, pos_x, pos_y, "TPMS(psi)", 30, COLOR_WHITE_ALPHA(180), "sans-regular");
 
   draw_tpms( s, pos_x-55, pos_y+50, fl );
   draw_tpms( s, pos_x+55, pos_y+50, fr );
@@ -517,7 +529,7 @@ static void bb_ui_draw_UI(UIState *s)
 
   // 2. tpms
   int viz_tpms_x = s->fb_w - (bdr_s+425);
-  int viz_tpms_y = bdr_s;
+  int viz_tpms_y = bdr_s + 50;
   bb_draw_tpms( s, viz_tpms_x, viz_tpms_y );
 
   // 3. debug
