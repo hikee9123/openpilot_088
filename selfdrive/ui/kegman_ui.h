@@ -42,6 +42,18 @@ static void ui_draw_track(UIState *s, const line_vertices_data &vd)
 }
 */
 
+static void bb_ui_text(const UIState *s, float x, float y, const char *string, float size, NVGcolor color, const char *font_name) {
+
+  if( font_name )
+  {
+    nvgFontFace(s->vg, font_name);
+    nvgFontSize(s->vg, size);
+  }
+
+  nvgFillColor(s->vg, color);
+  nvgText(s->vg, x, y, string, NULL);
+}
+
 //BB START: functions added for the display of various items
 static int bb_ui_draw_measure(UIState *s,  const char* bb_value, const char* bb_uom, const char* bb_label,
     int bb_x, int bb_y, int bb_uom_dx,
@@ -435,7 +447,7 @@ static void ui_draw_tpms(UIState *s, int x, int y, float tmps) {
 
   char tpmsFl[64];
   snprintf(tpmsFl, sizeof(tpmsFl), "%.1f", tmps );
-  ui_text( s, x, y, tpmsFl, 60, color, "sans-semibold");
+  bb_ui_text( s, x, y, tpmsFl, 60, color, "sans-semibold");
 }
 
 static void ui_draw_tpms(UIState *s, int viz_tpms_x, int viz_tpms_y) {
@@ -477,7 +489,7 @@ static void ui_draw_tpms(UIState *s, int viz_tpms_x, int viz_tpms_y) {
   nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE);
   const int pos_x = viz_tpms_x + (viz_tpms_w / 2);
   const int pos_y = viz_tpms_y + 45;
-  ui_text(s, pos_x, pos_y, "TPMS(psi)", 45, COLOR_WHITE_ALPHA(180), "sans-regular");
+  bb_ui_text(s, pos_x, pos_y, "TPMS(psi)", 45, COLOR_WHITE_ALPHA(180), "sans-regular");
 
   ui_draw_tpms( s, pos_x-55, pos_y+50, fl );
   ui_draw_tpms( s, pos_x+55, pos_y+50, fr );

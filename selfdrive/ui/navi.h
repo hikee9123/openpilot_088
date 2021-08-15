@@ -11,7 +11,7 @@ this is navigation code by OPKR, and thank you to the OPKR developer.
 I love OPKR code.
 */
 
-void ui_text(const UIState *s, float x, float y, const char *string, float size, NVGcolor color, const char *font_name) {
+static void ui_text(const UIState *s, float x, float y, const char *string, float size, NVGcolor color, const char *font_name) {
 
   if( font_name )
   {
