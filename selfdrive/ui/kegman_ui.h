@@ -520,7 +520,7 @@ static void bb_ui_draw_UI(UIState *s)
 
   // 2. tpms
   int viz_tpms_x = s->fb_w - (bdr_s+425);
-  int viz_tpms_y = bdr_s + 50;
+  int viz_tpms_y = bdr_s + 45;
   bb_draw_tpms( s, viz_tpms_x, viz_tpms_y );
 
   // 3. debug
