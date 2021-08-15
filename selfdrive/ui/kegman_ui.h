@@ -435,7 +435,7 @@ static void ui_draw_tpms(UIState *s, int x, int y, float tmps) {
 
   char tpmsFl[64];
   snprintf(tpmsFl, sizeof(tpmsFl), "%.1f", tmps );
-  ui_draw_text( s, x, y, tpmsFl, 60, color, "sans-semibold");
+  ui_text( s, x, y, tpmsFl, 60, color, "sans-semibold");
 }
 
 static void ui_draw_tpms(UIState *s, int viz_tpms_x, int viz_tpms_y) {
@@ -454,12 +454,12 @@ static void ui_draw_tpms(UIState *s, int viz_tpms_x, int viz_tpms_y) {
   float rl = tpms.getRl();
   float rr = tpms.getRr();
 
-  float minv = fl;
+  minv = fl;
   minv = std::min( minv, fr );
   minv = std::min( minv, rl );
   minv = std::min( minv, rr );
 
-  float maxv = fl;
+  maxv = fl;
   maxv = std::max( maxv, fr );
   maxv = std::max( maxv, rl );
   maxv = std::max( maxv, rr );
@@ -477,7 +477,7 @@ static void ui_draw_tpms(UIState *s, int viz_tpms_x, int viz_tpms_y) {
   nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE);
   const int pos_x = viz_tpms_x + (viz_tpms_w / 2);
   const int pos_y = viz_tpms_y + 45;
-  ui_draw_text(s, pos_x, pos_y, "TPMS(psi)", 45, COLOR_WHITE_ALPHA(180), "sans-regular");
+  ui_text(s, pos_x, pos_y, "TPMS(psi)", 45, COLOR_WHITE_ALPHA(180), "sans-regular");
 
   ui_draw_tpms( s, pos_x-55, pos_y+50, fl );
   ui_draw_tpms( s, pos_x+55, pos_y+50, fr );
