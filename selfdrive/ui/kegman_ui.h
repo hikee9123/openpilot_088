@@ -496,8 +496,8 @@ static void bb_draw_tpms(UIState *s, int viz_tpms_x, int viz_tpms_y) {
 
   nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE);
   int pos_x = viz_tpms_x + (viz_tpms_w / 2);
-  int pos_y = viz_tpms_y - 20;
-  bb_ui_text(s, pos_x, pos_y, "TPMS(psi)", 20, COLOR_WHITE_ALPHA(180), "sans-regular");
+  int pos_y = viz_tpms_y - 15;
+  bb_ui_text(s, pos_x, pos_y, "TPMS(psi)", 15, COLOR_WHITE_ALPHA(180), "sans-regular");
 
   pos_y = viz_tpms_y + 35;
   print_tpms( s, pos_x-55, pos_y+50, fl );
