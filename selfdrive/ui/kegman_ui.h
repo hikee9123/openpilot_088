@@ -465,10 +465,12 @@ static void bb_draw_tpms(UIState *s, int viz_tpms_x, int viz_tpms_y) {
   
 
   auto tpms = scene.car_state.getTpms();
-  float fl = 31;// tpms.getFl();
-  float fr = 31;// tpms.getFr();
-  float rl = 31; //tpms.getRl();
-  float rr = 31; //tpms.getRr();
+  float fl = tpms.getFl();
+  float fr = tpms.getFr();
+  float rl = tpms.getRl();
+  float rr = tpms.getRr();
+
+  fl = fr = rl = rr = 31;
 
   float maxv = 0;
   float minv = 300;
