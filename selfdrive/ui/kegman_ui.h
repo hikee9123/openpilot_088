@@ -424,6 +424,68 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w )
 }
 
 
+// TPMS code added from OPKR
+static void ui_draw_tpms(UIState *s, int x, int y, float tmps) {
+  NVGcolor color = COLOR_WHITE_ALPHA(200);
+  if ( tmps < 34) {
+    color = COLOR_RED;
+  } else if (tmps > 50) {
+    color =  COLOR_WHITE_ALPHA(200);
+  } 
+
+  char tpmsFl[64];
+  snprintf(tpmsFl, sizeof(tpmsFl), "%.1f", tmps );
+  ui_draw_text( s, x, y, tpmsFl, 60, color, "sans-semibold");
+}
+
+static void ui_draw_tpms(UIState *s, int viz_tpms_x, int viz_tpms_y) {
+  UIScene &scene = s->scene;
+
+  int viz_tpms_w = 230;
+  int viz_tpms_h = 160;
+
+  float maxv = 0;
+  float minv = 300;
+  
+
+  auto tpms = scene.car_state.getTpms();
+  float fl = tpms.getFl();
+  float fr = tpms.getFr();
+  float rl = tpms.getRl();
+  float rr = tpms.getRr();
+
+  float minv = fl;
+  minv = std::min( minv, fr );
+  minv = std::min( minv, rl );
+  minv = std::min( minv, rr );
+
+  float maxv = fl;
+  maxv = std::max( maxv, fr );
+  maxv = std::max( maxv, rl );
+  maxv = std::max( maxv, rr );
+
+  // Draw Border
+  const Rect rect = {viz_tpms_x, viz_tpms_y, viz_tpms_w, viz_tpms_h};
+  ui_draw_rect(s->vg, rect, COLOR_WHITE_ALPHA(100), 10, 20.);
+  // Draw Background
+  NVGcolor colorBK =  COLOR_BLACK_ALPHA(80);
+  if ((maxv - minv) > 3) {
+    colorBK = COLOR_RED_ALPHA(80);
+  ui_fill_rect(s->vg, rect, colorBK, 20);
+
+
+  nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE);
+  const int pos_x = viz_tpms_x + (viz_tpms_w / 2);
+  const int pos_y = viz_tpms_y + 45;
+  ui_draw_text(s, pos_x, pos_y, "TPMS(psi)", 45, COLOR_WHITE_ALPHA(180), "sans-regular");
+
+  ui_draw_tpms( s, pos_x-55, pos_y+50, fl );
+  ui_draw_tpms( s, pos_x+55, pos_y+50, fr );
+  ui_draw_tpms( s, pos_x-55, pos_y+100, rl );
+  ui_draw_tpms( s, pos_x+55, pos_y+100, rl );
+
+}
+
 static void bb_ui_draw_UI(UIState *s)
 {
   //const UIScene *scene = &s->scene;
@@ -435,11 +497,16 @@ static void bb_ui_draw_UI(UIState *s)
   const int bb_dmr_x = 0 + s->fb_w - bb_dmr_w - bdr_s;
   const int bb_dmr_y = (0 + bdr_s) + 220;
 
+  // 1. kegman ui
   bb_ui_draw_measures_left(s, bb_dml_x, bb_dml_y, bb_dml_w);
   bb_ui_draw_measures_right(s, bb_dmr_x, bb_dmr_y, bb_dmr_w);
 
+  // 2. tpms
+  int viz_tpms_x = s->fb_w - (bdr_s+425);
+  int viz_tpms_y = bdr_s;
+  ui_draw_tpms( s, viz_tpms_x, viz_tpms_y );
 
-  // 1. debug
+  // 3. debug
   int xpos = 250;
   int ypos = 400;
   nvgTextAlign(s->vg, NVG_ALIGN_LEFT | NVG_ALIGN_BASELINE);

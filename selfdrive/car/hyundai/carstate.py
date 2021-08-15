@@ -104,6 +104,25 @@ class CarState(CarStateBase):
 
     return  enabled
 
+  # TPMS code added from OPKR
+  def update_tpms(self, cp, ret ):
+    unit_ratio = 1.0
+    unit = cp.vl["TPMS11"]["UNIT"]
+    ret.tpms.fl = cp.vl["TPMS11"]['PRESSURE_FL']
+    ret.tpms.fr = cp.vl["TPMS11"]['PRESSURE_FR']
+    ret.tpms.rl = cp.vl["TPMS11"]['PRESSURE_RL']
+    ret.tpms.rr = cp.vl["TPMS11"]['PRESSURE_RR']
+
+    if unit == 1.0:
+      unit_ratio = 0.72519
+    elif unit == 2.0:
+      unit_ratio = 1.45038
+
+    ret.tpms.fl *= unit_ratio
+    ret.tpms.fr *= unit_ratio
+    ret.tpms.rl *= unit_ratio
+    ret.tpms.rr *= unit_ratio
+    return ret
 
   def update(self, cp, cp_cam):
     ret = car.CarState.new_message()
@@ -196,6 +215,7 @@ class CarState(CarStateBase):
       ret.leftBlindspot = cp.vl["LCA11"]["CF_Lca_IndLeft"] != 0
       ret.rightBlindspot = cp.vl["LCA11"]["CF_Lca_IndRight"] != 0
 
+    ret = self.update_tpms( cp, ret )
     # save the entire LKAS11 and CLU11
     self.lkas11 = copy.copy(cp_cam.vl["LKAS11"])
     self.clu11 = copy.copy(cp.vl["CLU11"])
@@ -288,7 +308,14 @@ class CarState(CarStateBase):
       ("ACCMode", "SCC12", 1),
 
       ("Navi_SCC_Camera_Act", "SCC11", 0),
-      ("TauGapSet", "SCC11", 4),      
+      ("TauGapSet", "SCC11", 4),
+
+      # TPMS
+      ("UNIT", "TPMS11", 0),
+      ("PRESSURE_FL", "TPMS11", 0),
+      ("PRESSURE_FR", "TPMS11", 0),
+      ("PRESSURE_RL", "TPMS11", 0),
+      ("PRESSURE_RR", "TPMS11", 0),      
     ]
 
     checks = [
@@ -305,7 +332,9 @@ class CarState(CarStateBase):
       ("SAS11", 100),
 
       ("SCC11", 50),
-      ("SCC12", 50),      
+      ("SCC12", 50),
+
+      ("TPMS11", 5),
     ]
 
 
