@@ -501,7 +501,7 @@ static void bb_draw_tpms(UIState *s, int viz_tpms_x, int viz_tpms_y) {
   print_tpms( s, pos_x-55, pos_y+50, fl );
   print_tpms( s, pos_x+55, pos_y+50, fr );
   print_tpms( s, pos_x-55, pos_y+100, rl );
-  print_tpms( s, pos_x+55, pos_y+100, rl );
+  print_tpms( s, pos_x+55, pos_y+100, rr );
 }
 
 
