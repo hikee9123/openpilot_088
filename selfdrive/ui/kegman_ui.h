@@ -451,10 +451,10 @@ static void print_tpms(UIState *s, int x, int y, float tmps) {
     color = COLOR_WHITE_ALPHA(200);
     snprintf(szTPMS, sizeof(szTPMS), "-" );
   }  else  {
-    snprintf(szTPMS, sizeof(szTPMS), "%.1f", tmps );
+    snprintf(szTPMS, sizeof(szTPMS), "%.0f", tmps );
   }
   
-  bb_ui_text( s, x, y, szTPMS, 60, color, "sans-semibold");
+  bb_ui_text( s, x, y, szTPMS, 55, color, "sans-semibold");
 }
 
 static void bb_draw_tpms(UIState *s, int viz_tpms_x, int viz_tpms_y) {
@@ -465,10 +465,10 @@ static void bb_draw_tpms(UIState *s, int viz_tpms_x, int viz_tpms_y) {
   
 
   auto tpms = scene.car_state.getTpms();
-  float fl = tpms.getFl();
-  float fr = tpms.getFr();
-  float rl = tpms.getRl();
-  float rr = tpms.getRr();
+  float fl = 31;// tpms.getFl();
+  float fr = 31;// tpms.getFr();
+  float rl = 31; //tpms.getRl();
+  float rr = 31; //tpms.getRr();
 
   float maxv = 0;
   float minv = 300;
@@ -494,7 +494,7 @@ static void bb_draw_tpms(UIState *s, int viz_tpms_x, int viz_tpms_y) {
 
   nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE);
   const int pos_x = viz_tpms_x + (viz_tpms_w / 2);
-  const int pos_y = viz_tpms_y + 20;
+  const int pos_y = viz_tpms_y + 35;
   bb_ui_text(s, pos_x, pos_y, "TPMS(psi)", 20, COLOR_WHITE_ALPHA(180), "sans-regular");
 
   print_tpms( s, pos_x-55, pos_y+50, fl );
