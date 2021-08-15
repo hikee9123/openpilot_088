@@ -470,8 +470,6 @@ static void bb_draw_tpms(UIState *s, int viz_tpms_x, int viz_tpms_y) {
   float rl = tpms.getRl();
   float rr = tpms.getRr();
 
-  fl = fr = rl = rr = 31;
-
   float maxv = 0;
   float minv = 300;
   minv = std::min( fl, fr );
