@@ -271,11 +271,10 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w )
   int uom_fontSize = 15;
   int bb_uom_dx =  (int)(bb_w /2 - uom_fontSize*2.5) ;
 
-  auto lead_one = (*s->sm)["modelV2"].getModelV2().getLeadsV3()[0];
- 
 
-  float angleSteers = scene->car_state.getSteeringAngleDeg();
-  float angleSteersDes = scene->controls_state.getSteeringAngleDesiredDegDEPRECATED();
+  auto radar_state = (*s->sm)["radarState"].getRadarState();  // radar
+  auto lead_radar = radar_state.getLeadOne();
+
   //add visual radar relative distance
   if( true )
   {
@@ -283,22 +282,34 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w )
     char uom_str[6];
     NVGcolor val_color = nvgRGBA(255, 255, 255, 200);
     
-    if (lead_one.getProb() > 0.5) {
-       float d_rel = lead_one.getX()[0]; //  scene->lead_data[0].getX()[0];
+    if ( lead_radar.getStatus() ) {
       //show RED if less than 5 meters
       //show orange if less than 15 meters
-      if((int)(d_rel) < 15) {
+      float d_rel2 = lead_radar.getDRel();
+      if((int)(d_rel2) < 15) {
         val_color = nvgRGBA(255, 188, 3, 200);
       }
-      if((int)(d_rel) < 5) {
+      if((int)(d_rel2) < 5) {
         val_color = nvgRGBA(255, 0, 0, 200);
       }
       // lead car relative distance is always in meters
-      snprintf(val_str, sizeof(val_str), "%d", (int)d_rel);
+      snprintf(val_str, sizeof(val_str), "%d", (int)d_rel2);
     } else {
        snprintf(val_str, sizeof(val_str), "-");
     }
-    snprintf(uom_str, sizeof(uom_str), "m   ");
+
+    auto lead_cam = (*s->sm)["modelV2"].getModelV2().getLeadsV3()[0];  // camera
+    if (lead_cam.getProb() > 0.1) {
+      float d_rel1 = lead_cam.getX()[0];
+
+      //uom_color = nvgRGBA(255, 255, 255, 200);
+      snprintf(uom_str, sizeof(uom_str),  "%d", (int)d_rel1);
+    }
+    else
+    {
+      snprintf(uom_str, sizeof(uom_str), "-");
+    }
+
     bb_h +=bb_ui_draw_measure(s,  val_str, uom_str, "REL DIST",
         bb_rx, bb_ry, bb_uom_dx,
         val_color, lab_color, uom_color,
@@ -312,8 +323,8 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w )
     char val_str[16];
     char uom_str[6];
     NVGcolor val_color = nvgRGBA(255, 255, 255, 200);
-    if ( lead_one.getProb() > 0.5 ) {
-      float v_rel = lead_one.getA()[0]; // scene->lead_data[0].getY()[0];
+    if ( lead_radar.getStatus() ) {
+      float v_rel = lead_radar.getVRel();  
       //show Orange if negative speed (approaching)
       //show Orange if negative speed faster than 5mph (approaching fast)
       if((int)(v_rel) < 0) {
@@ -346,6 +357,8 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w )
   //add  steering angle
   if( true )
   {
+    float angleSteers = scene->car_state.getSteeringAngleDeg();
+
     char val_str[16];
     char uom_str[6];
     NVGcolor val_color = nvgRGBA(0, 255, 0, 200);
@@ -371,6 +384,8 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w )
   //add  desired steering angle
   if( true )
   {
+    float angleSteersDes = scene->controls_state.getSteeringAngleDesiredDegDEPRECATED();  
+
     char val_str[50];
     char uom_str[6];
     NVGcolor val_color = nvgRGBA(255, 255, 255, 200);
