@@ -441,21 +441,15 @@ static void print_tpms(UIState *s, int x, int y, float tmps) {
   NVGcolor color = COLOR_WHITE_ALPHA(200);
   char szTPMS[64];
 
-  if ( tmps < 34) 
-  {
+  if ( tmps < 34)   {
     color = COLOR_RED;
-  } 
-  else if (tmps > 50) 
-  {
+  }   else if (tmps > 50)   {
     color =  COLOR_WHITE_ALPHA(200);
   } 
 
-  if ( tmps >= 250 || tmps <= 0 )
-  {
-    snprintf(szTPMS, sizeof(szTPMS), "N/A" );
-  }
-  else
-  {
+  if ( tmps >= 250 || tmps <= 0 )  {
+    snprintf(szTPMS, sizeof(szTPMS), "-" );
+  }  else  {
     snprintf(szTPMS, sizeof(szTPMS), "%.1f", tmps );
   }
   
@@ -467,9 +461,6 @@ static void bb_draw_tpms(UIState *s, int viz_tpms_x, int viz_tpms_y) {
 
   int viz_tpms_w = 230;
   int viz_tpms_h = 160;
-
-  float maxv = 0;
-  float minv = 300;
   
 
   auto tpms = scene.car_state.getTpms();
@@ -478,13 +469,13 @@ static void bb_draw_tpms(UIState *s, int viz_tpms_x, int viz_tpms_y) {
   float rl = tpms.getRl();
   float rr = tpms.getRr();
 
-  minv = fl;
-  minv = std::min( minv, fr );
+  float maxv = 0;
+  float minv = 300;
+  minv = std::min( fl, fr );
   minv = std::min( minv, rl );
   minv = std::min( minv, rr );
 
-  maxv = fl;
-  maxv = std::max( maxv, fr );
+  maxv = std::max( fl, fr );
   maxv = std::max( maxv, rl );
   maxv = std::max( maxv, rr );
 
@@ -502,8 +493,8 @@ static void bb_draw_tpms(UIState *s, int viz_tpms_x, int viz_tpms_y) {
 
   nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE);
   const int pos_x = viz_tpms_x + (viz_tpms_w / 2);
-  const int pos_y = viz_tpms_y + 30;
-  bb_ui_text(s, pos_x, pos_y, "TPMS(psi)", 30, COLOR_WHITE_ALPHA(180), "sans-regular");
+  const int pos_y = viz_tpms_y + 25;
+  bb_ui_text(s, pos_x, pos_y, "TPMS(psi)", 25, COLOR_WHITE_ALPHA(180), "sans-regular");
 
   print_tpms( s, pos_x-55, pos_y+50, fl );
   print_tpms( s, pos_x+55, pos_y+50, fr );
