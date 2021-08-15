@@ -481,8 +481,10 @@ static void bb_draw_tpms(UIState *s, int viz_tpms_x, int viz_tpms_y) {
   ui_draw_rect(s->vg, rect, COLOR_WHITE_ALPHA(100), 10, 20.);
   // Draw Background
   NVGcolor colorBK =  COLOR_BLACK_ALPHA(80);
-  if ((maxv - minv) > 3) {
+  if ((maxv - minv) > 3) 
+  {
     colorBK = COLOR_RED_ALPHA(80);
+  }
   ui_fill_rect(s->vg, rect, colorBK, 20);
 
 
