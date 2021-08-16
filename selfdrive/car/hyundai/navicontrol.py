@@ -129,9 +129,9 @@ class NaviControl():
       dRel = 150
       vRel = 0
 
-    dRelTarget = 70 #interp( CS.clu_Vanz, [30, 90], [ 30, 70 ] )
+    dRelTarget = 100 #interp( CS.clu_Vanz, [30, 90], [ 30, 70 ] )
     if dRel < dRelTarget and CS.clu_Vanz > 10:
-      dGap = interp( CS.clu_Vanz, [30, 40, 70], [ 20, 10, 5 ] )
+      dGap = interp( CS.clu_Vanz, [30, 40, 70, 80], [ 20, 10, 5, 2 ] )
       cruise_set_speed_kph = CS.clu_Vanz + dGap
 
     cruise_set_speed_kph = self.moveAvg.get_avg(cruise_set_speed_kph, 30)
