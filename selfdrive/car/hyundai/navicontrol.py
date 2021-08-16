@@ -154,8 +154,8 @@ class NaviControl():
     elif CS.is_highway or speedLimit < 30:
       return  cruise_set_speed_kph
     elif speedLimitDistance >= 50:
-      if speedLimit <= 50:
-        spdTarget = interp( speedLimitDistance, [20, 600], [ speedLimit, speedLimit + 50 ] )
+      if speedLimit <= 60:
+        spdTarget = interp( speedLimitDistance, [50, 600], [ speedLimit, speedLimit + 50 ] )
       else:
         spdTarget = interp( speedLimitDistance, [150, 800], [ speedLimit, speedLimit + 30 ] )
     else:
