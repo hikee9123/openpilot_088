@@ -130,7 +130,7 @@ class NaviControl():
       vRel = 0
 
     dRelTarget = 100 #interp( CS.clu_Vanz, [30, 90], [ 30, 70 ] )
-    if dRel < dRelTarget and CS.clu_Vanz > 10:
+    if dRel < dRelTarget and CS.clu_Vanz > 20:
       if vRel >= -2:
         dGap = interp( CS.clu_Vanz, [30, 40, 70, 80], [ 20, 10, 5, 2 ] )
       else:
