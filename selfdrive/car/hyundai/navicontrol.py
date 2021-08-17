@@ -26,6 +26,7 @@ class NaviControl():
     self.target_speed = 0
     self.set_point = 0
     self.wait_timer2 = 0
+    self.wait_timer3 = 0
 
     self.moveAvg = mvAvg.MoveAvg()
 
@@ -131,12 +132,19 @@ class NaviControl():
 
     dRelTarget = 100 #interp( CS.clu_Vanz, [30, 90], [ 30, 70 ] )
     if dRel < dRelTarget and CS.clu_Vanz > 20:
-      if vRel >= -2:
-        dGap = interp( CS.clu_Vanz, [30, 40, 70, 80], [ 20, 10, 5, 2 ] )
+      if vRel < -2:
+        self.wait_timer3 += 1
       else:
-        dGap = interp( CS.clu_Vanz, [30, 40, 70], [ 10, 5, 0 ] )
+        self.wait_timer3 = 0
 
+      if self.wait_timer3 > 100:
+        dGap = interp( CS.clu_Vanz, [30, 40, 70], [ 10, 5, 0 ] )
+      else:
+        dGap = interp( CS.clu_Vanz, [30, 40, 70, 80], [ 20, 10, 5, 2 ] )
       cruise_set_speed_kph = CS.clu_Vanz + dGap
+    else:
+      self.wait_timer3 = 0
+
 
     cruise_set_speed_kph = self.moveAvg.get_avg(cruise_set_speed_kph, 30)
     return  cruise_set_speed_kph
