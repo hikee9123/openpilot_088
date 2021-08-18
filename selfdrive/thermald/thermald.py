@@ -237,6 +237,8 @@ def thermald_thread():
       is_openpilot_view_enabled = params.get_bool("IsOpenpilotViewEnabled") # IsRHD
       if is_openpilot_view_enabled:
         startup_conditions["ignition"] = True
+      elif startup_conditions["ignition"] == True:
+        startup_conditions["ignition"] = False
 
     # get_network_type is an expensive call. update every 10s
     if (count % int(10. / DT_TRML)) == 0:
