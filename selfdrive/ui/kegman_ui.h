@@ -535,7 +535,7 @@ static void bb_ui_draw_UI(UIState *s)
   auto lead_one = (*s->sm)["modelV2"].getModelV2().getLeadsV3()[0];
 
 
-  int size = lead_one.size();
+  int size = length(lead_one);
   printf("lead_one %d  \n", size );
 
   if ( lead_one.getProb() > 0.1 ) {
