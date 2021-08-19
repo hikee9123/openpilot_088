@@ -138,7 +138,7 @@ class NaviControl():
         self.wait_timer3 = 0
 
       if self.wait_timer3 > 10:
-        dGap = interp( CS.clu_Vanz, [30, 40], [ 5, 0 ] )
+        dGap = interp( CS.clu_Vanz, [30, 40], [5, 0] )
       else:
         dGap = interp( CS.clu_Vanz, [30, 40, 60, 70], [ 20, 10, 5, 2 ] )
       cruise_set_speed_kph = CS.clu_Vanz + dGap
