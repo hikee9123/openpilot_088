@@ -93,25 +93,17 @@ static void ui_draw_traffic_sign(UIState *s, float map_sign, float speedLimit,  
     }
 
     // 2. image
-    if( traffic_sign  )  
+    if( traffic_sign  )
     {
-      float img_alpha = 0.3f;       
+      float img_alpha = 0.3f;
       ui_draw_image(s, {img_xpos, img_ypos, img_size, img_size}, traffic_sign, img_alpha);
     }
 
 
-
-
-
-    if( nTrafficSign == TS_CAMERA1 ) szSign = "신호위반";
-    else if( nTrafficSign == TS_INTERVAL ) szSign = "구간단속";
-    else if( nTrafficSign == TS_VARIABLE ) szSign = "가변구간";
-    else if( nTrafficSign == TS_CAMERA4 ) szSign = "이동식";
-    else if( nTrafficSign == TS_CAMERA5 ) szSign = "카메라";
-    else if( nTrafficSign == TS_TRAFFIC_INFO ) szSign = "교통정보";
+    if( nTrafficSign == TS_VARIABLE ) szSign = "가변구간";
     else if( nTrafficSign == TS_BEND_ROAD ) szSign = "굽은도로";
-    
-    
+    else if( nTrafficSign == TS_BUS_ONLY ) szSign = "버스전용차로";
+    else if( nTrafficSign == TS_BUMP_ROAD ) szSign = "과속방지턱";
 
     if( szSign )
     {
@@ -122,17 +114,20 @@ static void ui_draw_traffic_sign(UIState *s, float map_sign, float speedLimit,  
       char  szSignal[50];
       int   nFontSize = 30;
 
-      if( nTrafficSign == TS_CURVE_RIGHT ) szSign = "우측커브";
+      if( nTrafficSign == TS_CAMERA1 ) szSign = "신호위반";
+      else if( nTrafficSign == TS_CAMERA4 ) szSign = "이동식";
+      else if( nTrafficSign == TS_CAMERA5 ) szSign = "카메라";      
+      else if( nTrafficSign == TS_INTERVAL ) szSign = "구간단속";
+      else if( nTrafficSign == TS_CURVE_RIGHT ) szSign = "우측커브";
       else if( nTrafficSign == TS_CURVE_LEFT ) szSign = "좌측커브";
       else if( nTrafficSign == TS_RAIL_ROAD ) szSign = "철길건널목";
-      else if( nTrafficSign == TS_BUMP_ROAD ) szSign = "과속방지턱";
       else if( nTrafficSign == TS_PARK_CRACKDOWN ) szSign = "주정차금지";
       else if( nTrafficSign == TS_SCHOOL_ZONE1 ) szSign = "스쿨존#1";
       else if( nTrafficSign == TS_SCHOOL_ZONE2 ) szSign = "스쿨존#2";
       else if( nTrafficSign == TS_NARROW_ROAD ) szSign = "좁아지는도로";
-      else if( nTrafficSign == TS_BUS_ONLY ) szSign = "버스전용차로";
       else if( nTrafficSign == TS_OVERTRAK ) szSign = "추월금지구간";
       else if( nTrafficSign == TS_SHOULDER ) szSign = "갓길단속";
+      else if( nTrafficSign == TS_TRAFFIC_INFO ) szSign = "교통정보";      
       else {
         nFontSize = 73;
         szSign = szSignal;

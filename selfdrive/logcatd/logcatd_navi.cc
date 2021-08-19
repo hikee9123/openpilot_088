@@ -39,7 +39,7 @@ int traffic_camera( int nsignal_type, float fDistance )
     switch( nsignal_type )
     {
       case  TS_CAMERA1:  // 단속(카메라, 신호위반) 
-      case  TS_CAMERA2:
+      case  TS_CAMERA2_BUS:
       case  TS_CAMERA3:
       case  TS_CAMERA4:  // 단속구간(고정형 이동식)
       case  TS_CAMERA5:  // 단속(카메라, 신호위반)
