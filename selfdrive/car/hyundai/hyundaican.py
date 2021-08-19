@@ -84,7 +84,7 @@ def create_hda_mfc(packer, active ):
     "HDA_Active": 1 if active > 0 else 0,
     "HDA_Icon_State": active  # if active > 0 else 0,
   }
-  #  icon state  2 auto green, 1 hda read
+  #  HDA_Icon_State  2 HDA active(auto green), 1 HDA available, 0  HDA not available
   return packer.make_can_msg("LFAHDA_MFC", 0, values)
 
 def create_acc_commands(packer, enabled, accel, idx, lead_visible, set_speed, stopping):
