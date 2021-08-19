@@ -132,15 +132,7 @@ class NaviControl():
 
     dRelTarget = 110 #interp( CS.clu_Vanz, [30, 90], [ 30, 70 ] )
     if dRel < dRelTarget and CS.clu_Vanz > 20:
-      if vRel < 0:
-        self.wait_timer3 += 1
-      else:
-        self.wait_timer3 = 0
-
-      if self.wait_timer3 > 10:
-        dGap = interp( CS.clu_Vanz, [30, 40], [5, 0] )
-      else:
-        dGap = interp( CS.clu_Vanz, [30, 40, 60, 70], [ 20, 10, 5, 2 ] )
+      dGap = interp( CS.clu_Vanz, [30, 40,  70], [ 20, 10, 5 ] )
       cruise_set_speed_kph = CS.clu_Vanz + dGap
     else:
       self.wait_timer3 = 0
@@ -189,12 +181,11 @@ class NaviControl():
     elif CS.acc_active:
       cruiseState_speed = CS.out.cruiseState.speed * CV.MS_TO_KPH      
       kph_set_vEgo = self.get_navi_speed(  self.sm , CS, cruiseState_speed )
-      kph_fwd_speed = self.get_forword_car_speed( CS,  cruiseState_speed)
-
       self.ctrl_speed = min( cruiseState_speed, kph_set_vEgo)
 
       #if CS.cruise_set_mode == 1:
-      if CS.out.cruiseState.gapSet == 4:
+      if CS.cruise_set_mode == 1:
+        kph_fwd_speed = self.get_forword_car_speed( CS,  cruiseState_speed)
         self.ctrl_speed = min( self.ctrl_speed, kph_fwd_speed)
       btn_signal = self.ascc_button_control( CS, self.ctrl_speed )
  
