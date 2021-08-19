@@ -130,17 +130,17 @@ class NaviControl():
       dRel = 150
       vRel = 0
 
-    dRelTarget = 100 #interp( CS.clu_Vanz, [30, 90], [ 30, 70 ] )
+    dRelTarget = 110 #interp( CS.clu_Vanz, [30, 90], [ 30, 70 ] )
     if dRel < dRelTarget and CS.clu_Vanz > 20:
-      if vRel < -2:
+      if vRel < 0:
         self.wait_timer3 += 1
       else:
         self.wait_timer3 = 0
 
-      if self.wait_timer3 > 100:
-        dGap = interp( CS.clu_Vanz, [30, 40, 70], [ 10, 5, 0 ] )
+      if self.wait_timer3 > 10:
+        dGap = interp( CS.clu_Vanz, [30, 40], [ 5, 0 ] )
       else:
-        dGap = interp( CS.clu_Vanz, [30, 40, 70, 80], [ 20, 10, 5, 2 ] )
+        dGap = interp( CS.clu_Vanz, [30, 40, 60, 70], [ 20, 10, 5, 2 ] )
       cruise_set_speed_kph = CS.clu_Vanz + dGap
     else:
       self.wait_timer3 = 0
