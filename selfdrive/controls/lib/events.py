@@ -511,23 +511,6 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
       Priority.LOW, VisualAlert.none, AudibleAlert.none, .0, .1, .1),
   },
 
-
-    EventName.steerTorqueOver: {
-    ET.WARNING: Alert(
-      "TAKE CONTROL",
-      "Auto-Steering Pauses",
-      AlertStatus.userPrompt, AlertSize.mid,
-      Priority.LOW, VisualAlert.steerRequired, AudibleAlert.chimePrompt, 0, 0, .1),
-  },
-  
-  EventName.steerTorqueLow: {
-    ET.WARNING: Alert(
-      "TAKE CONTROL",
-      "Temporarily Degraded Auto-Steering",
-      AlertStatus.userPrompt, AlertSize.mid,
-      Priority.LOW, VisualAlert.steerRequired, AudibleAlert.chimePrompt, 0., 0., .1),
-  },
-
   EventName.steerSaturated: {
     ET.WARNING: Alert(
       "TAKE CONTROL",
@@ -746,7 +729,14 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
     ET.SOFT_DISABLE: SoftDisableAlert("Low Memory: Reboot Your Device"),
     ET.PERMANENT: NormalPermanentAlert("Low Memory", "Reboot your Device"),
     ET.NO_ENTRY: NoEntryAlert("Low Memory: Reboot Your Device",
-                               audible_alert=AudibleAlert.chimeDisengage),
+                              audible_alert=AudibleAlert.chimeDisengage),
+  },
+
+  EventName.highCpuUsage: {
+    #ET.SOFT_DISABLE: SoftDisableAlert("System Malfunction: Reboot Your Device"),
+    #ET.PERMANENT: NormalPermanentAlert("System Malfunction", "Reboot your Device"),
+    ET.NO_ENTRY: NoEntryAlert("System Malfunction: Reboot Your Device",
+                              audible_alert=AudibleAlert.chimeDisengage),
   },
 
   EventName.accFaulted: {
