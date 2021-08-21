@@ -120,8 +120,8 @@ static void bb_ui_draw_measures_right(UIState *s, int bb_x, int bb_y, int bb_w )
     NVGcolor val_color = nvgRGBA(255, 255, 255, 200);
 
     auto  maxCpuTemp = scene->deviceState.getCpuTempC();
-    //int   cpuPerc = scene->deviceState.getCpuUsagePercentDEPRECATED();  
-    int   cpuPerc = scene->deviceState.getCpuUsagePercent()[0];
+    int   cpuPerc = scene->deviceState.getCpuUsagePercentDEPRECATED();  
+    //int   cpuPerc = scene->deviceState.getCpuUsagePercent()[0];
     float cpuTemp = maxCpuTemp[0];
 
 
