@@ -199,7 +199,7 @@ struct CarState {
   rightBlindspot @34 :Bool; # Is there something blocking the right lane change
 
   # atom
-  tpms @37 :WheelSpeeds;
+  tpms @38 :WheelSpeeds;
 
 
   struct WheelSpeeds {
