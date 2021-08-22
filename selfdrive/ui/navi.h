@@ -104,6 +104,12 @@ static void ui_draw_traffic_sign(UIState *s, float map_sign, float speedLimit,  
     else if( nTrafficSign == TS_BEND_ROAD ) szSign = "굽은도로";
     else if( nTrafficSign == TS_BUS_ONLY ) szSign = "버스전용차로";
     else if( nTrafficSign == TS_BUMP_ROAD ) szSign = "과속방지턱";
+    else if( nTrafficSign == TS_CAMERA1 ) szSign = "신호위반";
+    else if( nTrafficSign == TS_CAMERA2_BUS ) szSign = "버스";
+    else if( nTrafficSign == TS_CAMERA3 ) szSign = "경찰차";
+    else if( nTrafficSign == TS_CAMERA4 ) szSign = "이동식";
+    else if( nTrafficSign == TS_CAMERA5 ) szSign = "카메라";  
+    else if( nTrafficSign == TS_INTERVAL ) szSign = "구간단속";
 
     if( szSign )
     {
@@ -114,11 +120,7 @@ static void ui_draw_traffic_sign(UIState *s, float map_sign, float speedLimit,  
       char  szSignal[50];
       int   nFontSize = 30;
 
-      if( nTrafficSign == TS_CAMERA1 ) szSign = "신호위반";
-      else if( nTrafficSign == TS_CAMERA4 ) szSign = "이동식";
-      else if( nTrafficSign == TS_CAMERA5 ) szSign = "카메라";      
-      else if( nTrafficSign == TS_INTERVAL ) szSign = "구간단속";
-      else if( nTrafficSign == TS_CURVE_RIGHT ) szSign = "우측커브";
+      if( nTrafficSign == TS_CURVE_RIGHT ) szSign = "우측커브";
       else if( nTrafficSign == TS_CURVE_LEFT ) szSign = "좌측커브";
       else if( nTrafficSign == TS_RAIL_ROAD ) szSign = "철길건널목";
       else if( nTrafficSign == TS_PARK_CRACKDOWN ) szSign = "주정차금지";
