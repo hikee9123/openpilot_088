@@ -19,9 +19,11 @@ class DRIVER_MONITOR_SETTINGS():
   def __init__(self, TICI=TICI, DT_DMON=DT_DMON):
     self._DT_DMON = DT_DMON
     self._AWARENESS_TIME = 35. # passive wheeltouch total timeout
+    self._AWARENESS_STEP_CHANGE = self._AWARENESS_TIME  * 20    # touch
     self._AWARENESS_PRE_TIME_TILL_TERMINAL = 12.
     self._AWARENESS_PROMPT_TIME_TILL_TERMINAL = 6.
     self._DISTRACTED_TIME = 11. # active monitoring total timeout
+    self._DISTRACTED_STEP_CHANGE = self._DISTRACTED_TIME * 1   # 
     self._DISTRACTED_PRE_TIME_TILL_TERMINAL = 8.
     self._DISTRACTED_PROMPT_TIME_TILL_TERMINAL = 6.
 
@@ -135,7 +137,7 @@ class DriverStatus():
   def _set_timers(self, active_monitoring):
     if self.active_monitoring_mode and self.awareness <= self.threshold_prompt:
       if active_monitoring:
-        self.step_change = self.settings._DT_DMON / self.settings._DISTRACTED_TIME
+        self.step_change = self.settings._DT_DMON / self.settings._DISTRACTED_STEP_CHANGE
       else:
         self.step_change = 0.
       return  # no exploit after orange alert
@@ -150,7 +152,7 @@ class DriverStatus():
 
       self.threshold_pre = self.settings._DISTRACTED_PRE_TIME_TILL_TERMINAL / self.settings._DISTRACTED_TIME
       self.threshold_prompt = self.settings._DISTRACTED_PROMPT_TIME_TILL_TERMINAL / self.settings._DISTRACTED_TIME
-      self.step_change = self.settings._DT_DMON / self.settings._DISTRACTED_TIME
+      self.step_change = self.settings._DT_DMON / self.settings._DISTRACTED_STEP_CHANGE
       self.active_monitoring_mode = True
     else:
       if self.active_monitoring_mode:
@@ -159,7 +161,7 @@ class DriverStatus():
 
       self.threshold_pre = self.settings._AWARENESS_PRE_TIME_TILL_TERMINAL / self.settings._AWARENESS_TIME
       self.threshold_prompt = self.settings._AWARENESS_PROMPT_TIME_TILL_TERMINAL / self.settings._AWARENESS_TIME
-      self.step_change = self.settings._DT_DMON / self.settings._AWARENESS_TIME
+      self.step_change = self.settings._DT_DMON / self.settings._AWARENESS_STEP_CHANGE
       self.active_monitoring_mode = False
 
   def _is_driver_distracted(self, pose, blink):

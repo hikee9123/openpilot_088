@@ -32,6 +32,10 @@ class PowerMonitoring:
     self.car_voltage_instant_mV = 12e3          # Last value of pandaState voltage
     self.integration_lock = threading.Lock()
 
+
+    self.ts_last_charging_ctrl = None
+    self.power_on2_time = 0
+
     car_battery_capacity_uWh = self.params.get("CarBatteryCapacity")
     if car_battery_capacity_uWh is None:
       car_battery_capacity_uWh = 0
@@ -175,16 +179,47 @@ class PowerMonitoring:
 
   # See if we need to shutdown
   def should_shutdown(self, pandaState, offroad_timestamp, started_seen):
-    if pandaState is None or offroad_timestamp is None:
+    if offroad_timestamp is None:
       return False
 
-    now = sec_since_boot()
+    now = sec_since_boot()    
+    usbOnline = HARDWARE.get_usb_present()
+    power_on_time = now - offroad_timestamp    
+
+    if usbOnline or (power_on_time < 10):
+      self.power_on2_time = now
+      return False
+    elif self.power_on2_time == 0:
+      self.power_on2_time = now
+
+    batteryPercent = HARDWARE.get_battery_capacity()
+    battery_power_on_time = now - self.power_on2_time 
+    if batteryPercent < 10:
+      if battery_power_on_time> 10:
+        return True
+
+ 
+    if pandaState is None:
+      return False
+
     panda_charging = (pandaState.pandaState.usbPowerMode != log.PandaState.UsbPowerMode.client)
-    BATT_PERC_OFF = 10
+    BATT_PERC_OFF = 90 # 10 if LEON else 3
 
     should_shutdown = False
     # Wait until we have shut down charging before powering down
     should_shutdown |= (not panda_charging and self.should_disable_charging(pandaState, offroad_timestamp))
-    should_shutdown |= ((HARDWARE.get_battery_capacity() < BATT_PERC_OFF) and (not HARDWARE.get_battery_charging()) and ((now - offroad_timestamp) > 60))
+    should_shutdown |= (batteryPercent < BATT_PERC_OFF)
     should_shutdown &= started_seen or (now > MIN_ON_TIME_S)
     return should_shutdown
+
+
+
+  def charging_ctrl(self, msg, ts, to_discharge, to_charge ):
+    if self.ts_last_charging_ctrl is None or (ts - self.ts_last_charging_ctrl) >= 300.:
+      battery_changing = HARDWARE.get_battery_charging()
+      if self.ts_last_charging_ctrl:
+        if msg.deviceState.batteryPercent >= to_discharge and battery_changing:
+          HARDWARE.set_battery_charging(False)
+        elif msg.deviceState.batteryPercent <= to_charge and not battery_changing:
+          HARDWARE.set_battery_charging(True)
+      self.ts_last_charging_ctrl = ts

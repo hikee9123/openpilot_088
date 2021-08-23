@@ -196,6 +196,10 @@ struct CarState {
   leftBlindspot @33 :Bool; # Is there something blocking the left lane change
   rightBlindspot @34 :Bool; # Is there something blocking the right lane change
 
+  # atom
+  tpms @38 :WheelSpeeds;
+
+
   struct WheelSpeeds {
     # optional wheel speeds
     fl @0 :Float32;
@@ -211,6 +215,12 @@ struct CarState {
     speedOffset @3 :Float32;
     standstill @4 :Bool;
     nonAdaptive @5 :Bool;
+
+    # atom
+    modeSel @6 :Int16;
+    cruiseSwState @7 :Int16;
+    accActive @8 :Bool;
+    gapSet @9 :Int16;
   }
 
   enum GearShifter {

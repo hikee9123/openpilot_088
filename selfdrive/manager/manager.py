@@ -36,6 +36,19 @@ def manager_init():
     ("CompletedTrainingVersion", "0"),
     ("HasAcceptedTerms", "0"),
     ("OpenpilotEnabledToggle", "1"),
+
+    ("IsOpenpilotViewEnabled", "0"),
+    ("OpkrAutoResume", "0"),
+    ("OpkrLiveSteerRatio", "0"),
+    ("OpkrTurnSteeringDisable", "0"),
+    ("PutPrebuiltOn", "0"),
+    ("OpkrAutoScreenOff", "0"),
+    ("OpkrAutoFocus", "0"),
+    ("OpkrUIBrightness", "0"),
+    ("OpkrUIVolumeBoost", "0"),    
+    ("LongitudinalControl", "0"),
+    ("OpkrRunNaviOnBoot", "0"),
+    ("OpkrSSHLegacy", "0"), 
   ]
   if not PC:
     default_params.append(("LastUpdateTime", datetime.datetime.utcnow().isoformat().encode('utf8')))
@@ -111,10 +124,13 @@ def manager_thread():
   cloudlog.info("manager start")
   cloudlog.info({"environ": os.environ})
 
-  # save boot log
-  subprocess.call("./bootlog", cwd=os.path.join(BASEDIR, "selfdrive/loggerd"))
+
 
   params = Params()
+  enableLogger = params.get_bool("UploadRaw")
+  if enableLogger:
+    # save boot log
+    subprocess.call("./bootlog", cwd=os.path.join(BASEDIR, "selfdrive/loggerd"))
 
   ignore = []
   if params.get("DongleId", encoding='utf8') == UNREGISTERED_DONGLE_ID:

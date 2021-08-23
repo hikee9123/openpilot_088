@@ -78,6 +78,34 @@ def create_lfahda_mfc(packer, enabled, hda_set_speed=0):
   }
   return packer.make_can_msg("LFAHDA_MFC", 0, values)
 
+def create_hda_mfc(packer, active ):
+  values = {
+    "HDA_USM": 2,
+    "HDA_Active": 1 if active > 0 else 0,
+    "HDA_Icon_State": active  # if active > 0 else 0,
+  }
+  #  HDA_Icon_State  2 HDA active(auto green), 1 HDA available, 0  HDA not available
+  # HDA_USM 2 = ?
+
+  # HDA_Icon_State 0 = HDA not available
+  # HDA_Icon_State 1 = HDA available
+  # HDA_Icon_State 2 = HDA active
+
+  # HDA_VSetReq = HDA speed limit
+
+  # LFA_SysWarning 0 = normal
+  # LFA_SysWarning 1 = "Switching to HDA", short beep
+  # LFA_SysWarning 2 = "Switching to Smart Cruise control", short beep
+  # LFA_SysWarning 3 =  LFA error
+
+  # LFA_Icon_State 0 = no wheel
+  # LFA_Icon_State 1 = white wheel
+  # LFA_Icon_State 2 = green wheel
+
+  # LFA_USM 2 = ?
+
+  return packer.make_can_msg("LFAHDA_MFC", 0, values)
+
 def create_acc_commands(packer, enabled, accel, idx, lead_visible, set_speed, stopping):
   commands = []
 
@@ -149,3 +177,17 @@ def create_frt_radar_opt(packer):
     "CF_FCA_Equip_Front_Radar": 1,
   }
   return packer.make_can_msg("FRT_RADAR11", 0, frt_radar11_values)
+
+def create_mdps12(packer, frame, mdps12):
+  #values = copy.deepcopy( mdps12 )
+  values = mdps12
+  values["CF_Mdps_ToiActive"] = 0
+  values["CF_Mdps_ToiUnavail"] = 1
+  values["CF_Mdps_MsgCount2"] = frame % 0x100
+  values["CF_Mdps_Chksum2"] = 0
+
+  dat = packer.make_can_msg("MDPS12", 2, values)[2]
+  checksum = sum(dat) % 256
+  values["CF_Mdps_Chksum2"] = checksum
+
+  return packer.make_can_msg("MDPS12", 2, values)
