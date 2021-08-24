@@ -94,7 +94,7 @@ class LateralPlanner():
     if modeSel == 1:
       return self.use_lanelines
     elif modeSel == 2:
-      return True
+      return not self.use_lanelines
 
     if ll_probs[1] < 0.5 or ll_probs[2] < 0.5:
       if self.lane_timer > 0:
