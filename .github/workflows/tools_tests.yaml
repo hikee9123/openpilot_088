@@ -5,7 +5,7 @@ on:
 
 env:
   BASE_IMAGE: openpilot-base
-  DOCKER_REGISTRY: ghcr.io/commaai
+  DOCKER_REGISTRY: ghcr.io/hikee9123
   DOCKER_LOGIN: docker login ghcr.io -u adeebshihadeh -p ${{ secrets.CONTAINER_TOKEN }}
 
   BUILD: |
@@ -51,7 +51,7 @@ jobs:
         docker pull $DOCKER_REGISTRY/$IMAGE_NAME:latest || true
         docker build --cache-from $DOCKER_REGISTRY/$IMAGE_NAME:latest -t $DOCKER_REGISTRY/$IMAGE_NAME:latest -f tools/sim/Dockerfile.sim .
     - name: Push to container registry
-      if: github.ref == 'refs/heads/master' && github.repository == 'commaai/openpilot'
+      if: github.ref == 'refs/heads/master' && github.repository == 'hikee9123/openpilot'
       run: |
         $DOCKER_LOGIN
         docker push $DOCKER_REGISTRY/$IMAGE_NAME:latest
