@@ -546,14 +546,9 @@ static void bb_ui_draw_UI(UIState *s)
   auto model = (*s->sm)["modelV2"].getModelV2();
   auto model_position = model.getPosition();
 
-  float x = model_position.getX()[0];
-  float y = model_position.getY()[0];
-  float z = model_position.getZ()[0];
-  float t = model_position.getT()[0];
-
-    ui_print(s, xpos, ypos+100, "X:%.3f", x  );
-    ui_print(s, xpos, ypos+150, "Y:%.3f", y  );
-    ui_print(s, xpos, ypos+200, "Z:%.3f", z  );
-    ui_print(s, xpos, ypos+250, "T:%.3f", t  );
+    ui_print(s, xpos, ypos+100, "X:%.3f", model_position.getX()[0]  );
+    ui_print(s, xpos, ypos+150, "Y:%.3f", model_position.getY()[0]  );
+    ui_print(s, xpos, ypos+200, "Z:%.3f", model_position.getZ()[0]  );
+    ui_print(s, xpos, ypos+250, "T:%.3f", model_position.getT()[0]  );
 }
 //BB END: functions added for the display of various items
