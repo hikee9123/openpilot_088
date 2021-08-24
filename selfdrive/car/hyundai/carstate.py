@@ -42,6 +42,7 @@ class CarState(CarStateBase):
     self.gasPressed = False
 
 
+
   #@staticmethod
   def cruise_speed_button( self ):
     if self.prev_acc_active != self.acc_active:
