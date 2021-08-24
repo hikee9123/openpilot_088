@@ -35,9 +35,11 @@ class CarState(CarStateBase):
     # acc button 
     self.prev_clu_CruiseSwState = 0
     self.prev_acc_active = 0
+    self.prev_acc_set_btn = False
     self.acc_active = 0
     self.cruise_set_speed_kph = 0
     self.cruise_set_mode = 0      # 모드 설정.
+    self.gasPressed = False
 
 
   #@staticmethod
@@ -47,7 +49,8 @@ class CarState(CarStateBase):
       self.cruise_set_speed_kph = self.clu_Vanz
 
     set_speed_kph = self.cruise_set_speed_kph
-    if not self.acc_active:
+    if not self.prev_acc_set_btn:
+      self.prev_acc_set_btn = self.acc_active
       if self.cruise_buttons == Buttons.RES_ACCEL:   # up 
         self.cruise_set_speed_kph = self.VSetDis
       else:
@@ -60,6 +63,9 @@ class CarState(CarStateBase):
           if self.cruise_set_mode > 2:
             self.cruise_set_mode = 0
       return self.cruise_set_speed_kph
+
+    elif self.prev_acc_set_btn != self.acc_active:
+      self.prev_acc_set_btn = self.acc_active
 
     if self.cruise_buttons:
       self.cruise_buttons_time += 1
@@ -77,7 +83,10 @@ class CarState(CarStateBase):
     if self.cruise_buttons == Buttons.RES_ACCEL:   # up 
       set_speed_kph +=  1
     elif self.cruise_buttons == Buttons.SET_DECEL:  # dn
-      set_speed_kph -=  1
+      if self.gasPressed:
+        set_speed_kph = self.clu_Vanz + 1
+      else:
+        set_speed_kph -=  1
 
     if set_speed_kph < 30:
       set_speed_kph = 30
@@ -191,6 +200,7 @@ class CarState(CarStateBase):
       ret.gas = cp.vl["EMS12"]["PV_AV_CAN"] / 100.
       ret.gasPressed = bool(cp.vl["EMS16"]["CF_Ems_AclAct"])
 
+    self.gasPressed = ret.gasPressed
     # Gear Selection via Cluster - For those Kia/Hyundai which are not fully discovered, we can use the Cluster Indicator for Gear Selection,
     # as this seems to be standard over all cars, but is not the preferred method.
     if self.CP.carFingerprint in FEATURES["use_cluster_gears"]:
