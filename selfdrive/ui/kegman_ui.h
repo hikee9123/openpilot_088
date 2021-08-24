@@ -543,7 +543,7 @@ static void bb_ui_draw_UI(UIState *s)
     ui_print(s, xpos, ypos+250, "A:%.1f", lead_one.getA()[0]  );
   }
 */
-  auto model = sm["modelV2"].getModelV2();
+  auto model = (*s->sm)["modelV2"].getModelV2();
   auto model_position = model.getPosition();
 
   float x = model_position.getX()[0];
