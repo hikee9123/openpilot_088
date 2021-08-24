@@ -535,7 +535,7 @@ static void bb_ui_draw_UI(UIState *s)
 
   auto lead_one = (*s->sm)["modelV2"].getModelV2().getLeadsV3()[0];
 
-
+/*
   if ( lead_one.getProb() > 0.0 ) {
     ui_print(s, xpos, ypos+50, "P:%.2f", lead_one.getProb()  );
     ui_print(s, xpos, ypos+100, "X:%.1f", lead_one.getX()[0]  );
@@ -543,5 +543,18 @@ static void bb_ui_draw_UI(UIState *s)
     ui_print(s, xpos, ypos+200, "V:%.1f", lead_one.getV()[0]  );
     ui_print(s, xpos, ypos+250, "A:%.1f", lead_one.getA()[0]  );
   }
+*/
+  auto model = sm["modelV2"].getModelV2();
+  auto model_position = model.getPosition();
+
+  float x = model_position.getX()[0];
+  float y = model_position.getY()[0];
+  float z = model_position.getZ()[0];
+  float t = model_position.getT()[0];
+
+    ui_print(s, xpos, ypos+100, "X:%.3f", x  );
+    ui_print(s, xpos, ypos+150, "Y:%.3f", y  );
+    ui_print(s, xpos, ypos+200, "V:%.3f", z  );
+    ui_print(s, xpos, ypos+250, "A:%.3f", t  );
 }
 //BB END: functions added for the display of various items
