@@ -533,9 +533,8 @@ static void bb_ui_draw_UI(UIState *s)
   nvgFontSize(s->vg, 40);
   nvgFillColor(s->vg, nvgRGBA(255, 255, 255, 255));    
 
-  auto lead_one = (*s->sm)["modelV2"].getModelV2().getLeadsV3()[0];
-
 /*
+  auto lead_one = (*s->sm)["modelV2"].getModelV2().getLeadsV3()[0];
   if ( lead_one.getProb() > 0.0 ) {
     ui_print(s, xpos, ypos+50, "P:%.2f", lead_one.getProb()  );
     ui_print(s, xpos, ypos+100, "X:%.1f", lead_one.getX()[0]  );
@@ -554,7 +553,7 @@ static void bb_ui_draw_UI(UIState *s)
 
     ui_print(s, xpos, ypos+100, "X:%.3f", x  );
     ui_print(s, xpos, ypos+150, "Y:%.3f", y  );
-    ui_print(s, xpos, ypos+200, "V:%.3f", z  );
-    ui_print(s, xpos, ypos+250, "A:%.3f", t  );
+    ui_print(s, xpos, ypos+200, "Z:%.3f", z  );
+    ui_print(s, xpos, ypos+250, "T:%.3f", t  );
 }
 //BB END: functions added for the display of various items
