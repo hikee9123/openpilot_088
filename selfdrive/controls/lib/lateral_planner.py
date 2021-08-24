@@ -71,6 +71,58 @@ class LateralPlanner():
     self.lane_change_timer_atuo = 0.0
 
 
+    # atom
+    self.lanelines = True
+    self.lane_timer = 0
+    self.lane_timer2 = 0
+
+  # atom
+  def auto_lanelines(self, sm, md ):
+    if not self.use_lanelines:
+      return False
+ 
+    ll_probs = md.laneLineProbs
+    carState = sm['carState']
+    radarState = sm['radarState']
+    lanelines = True
+    #dRel = radarState.leadOne.dRel
+    vEgo_kph = carState.vEgo * CV.MS_TO_KPH
+    modeSel = carState.cruiseState.modeSel
+
+    ll_prob_ok = self.lanelines
+
+    if modeSel == 1:
+      return self.use_lanelines
+    elif modeSel == 2:
+      return True
+
+    if ll_probs[1] < 0.5 or ll_probs[2] < 0.5:
+      if self.lane_timer > 0:
+        self.lane_timer -= 1
+      else:
+        ll_prob_ok = False
+    else:
+      self.lane_timer = 200
+
+    if ll_probs[1] > 0.5 and ll_probs[2] > 0.5:
+      if self.lane_timer2 > 0:
+        self.lane_timer2 -= 1
+      else:
+        ll_prob_ok = True
+    else:
+      self.lane_timer2 = 100
+
+    
+    if ll_prob_ok == False:
+      lanelines = False
+    elif vEgo_kph < 5:  #or dRel < 25:
+      lanelines = False
+    elif self.lanelines:
+      lanelines = True
+    else:
+      if vEgo_kph < 15:
+        lanelines = False
+    return lanelines
 
   def auto_lanechange( self, md, torque_applied ):
     # auto
@@ -208,7 +260,9 @@ class LateralPlanner():
     if self.desire == log.LateralPlan.Desire.laneChangeRight or self.desire == log.LateralPlan.Desire.laneChangeLeft:
       self.LP.lll_prob *= self.lane_change_ll_prob
       self.LP.rll_prob *= self.lane_change_ll_prob
-    if self.use_lanelines:
+    #if self.use_lanelines:
+    self.lanelines = self.auto_lanelines( sm, md )
+    if self.lanelines:
       d_path_xyz = self.LP.get_d_path(v_ego, self.t_idxs, self.path_xyz)
       self.libmpc.set_weights(MPC_COST_LAT.PATH, MPC_COST_LAT.HEADING, CP.steerRateCost)
     else:
@@ -271,6 +325,7 @@ class LateralPlanner():
     plan_send.lateralPlan.desire = self.desire
     plan_send.lateralPlan.laneChangeState = self.lane_change_state
     plan_send.lateralPlan.laneChangeDirection = self.lane_change_direction
+    plan_send.lateralPlan.laneLess = not self.lanelines
 
     pm.send('lateralPlan', plan_send)
 

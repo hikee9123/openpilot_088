@@ -235,7 +235,11 @@ static void update_state(UIState *s) {
      scene.liveNaviData = sm["liveNaviData"].getLiveNaviData();
      scene.scr.map_is_running = scene.liveNaviData.getMapEnable();
    } 
-
+   if (sm.updated("lateralPlan"))
+   {
+    scene.lateralPlan = sm["lateralPlan"].getLateralPlan();
+    scene.end_to_end = scene.lateralPlan.getLaneLess();
+   } 
 }
 
 static void update_params(UIState *s) {
@@ -312,7 +316,7 @@ QUIState::QUIState(QObject *parent) : QObject(parent) {
   ui_state.sm = std::make_unique<SubMaster, const std::initializer_list<const char *>>({
     "modelV2", "controlsState", "liveCalibration", "deviceState", "roadCameraState",
     "pandaState", "carParams", "driverMonitoringState", "sensorEvents", "carState", "liveLocationKalman",
-    "liveNaviData", "gpsLocationExternal","radarState",
+    "liveNaviData", "gpsLocationExternal","radarState","lateralPlan",
   });
 
   ui_state.fb_w = vwp_w;
