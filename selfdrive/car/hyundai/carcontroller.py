@@ -201,7 +201,7 @@ class CarController():
       if self.car_fingerprint in FEATURES["send_lfa_mfa"]:
         can_sends.append(create_lfahda_mfc(self.packer, enabled))
       else:
-        activated_hda = CS.is_highway if enabled else 0
+        activated_hda = CS.is_highway #if enabled else 0
         # activated_hda: 0 - off, 1 - main road, 2 - highway
         can_sends.append(create_hda_mfc(self.packer, activated_hda))
 
