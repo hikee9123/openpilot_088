@@ -240,7 +240,7 @@ class CarState(CarStateBase):
     self.cruise_buttons = cp.vl["CLU11"]["CF_Clu_CruiseSwState"]
 
     self.lkas_button_on = cp_cam.vl["LKAS11"]["CF_Lkas_LdwsSysState"]
-    self.is_highway = cp.vl["SCC11"]["Navi_SCC_Camera_Act"] != 0.
+    self.is_highway = cp.vl["SCC11"]["Navi_SCC_Camera_Act"]  # != 0.
     if ret.gearShifter != GearShifter.drive or ret.seatbeltUnlatched or ret.doorOpen:
       self.enable_status = False
     else:
