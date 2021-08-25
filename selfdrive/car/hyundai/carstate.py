@@ -241,6 +241,8 @@ class CarState(CarStateBase):
 
     self.lkas_button_on = cp_cam.vl["LKAS11"]["CF_Lkas_LdwsSysState"]
     self.is_highway = cp.vl["SCC11"]["Navi_SCC_Camera_Act"]  # != 0.
+    self.navi_camera_status  =  cp.vl["SCC11"]["Navi_SCC_Camera_Status"]
+    self.hda_VsetReq  =  cp.vl["LFAHDA_MFC"]["HDA_VSetReq"]
     if ret.gearShifter != GearShifter.drive or ret.seatbeltUnlatched or ret.doorOpen:
       self.enable_status = False
     else:
@@ -319,6 +321,7 @@ class CarState(CarStateBase):
       ("ACCMode", "SCC12", 1),
 
       ("Navi_SCC_Camera_Act", "SCC11", 0),
+      ("Navi_SCC_Camera_Status", "SCC11", 0),
       ("TauGapSet", "SCC11", 4),
 
       # TPMS
@@ -326,7 +329,9 @@ class CarState(CarStateBase):
       ("PRESSURE_FL", "TPMS11", 0),
       ("PRESSURE_FR", "TPMS11", 0),
       ("PRESSURE_RL", "TPMS11", 0),
-      ("PRESSURE_RR", "TPMS11", 0),      
+      ("PRESSURE_RR", "TPMS11", 0),
+
+      ("HDA_VSetReq", "LFAHDA_MFC", 0),
     ]
 
     checks = [
@@ -346,6 +351,7 @@ class CarState(CarStateBase):
       ("SCC12", 50),
 
       ("TPMS11", 1),
+      ("LFAHDA_MFC", 1),
     ]
 
 
