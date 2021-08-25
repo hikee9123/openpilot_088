@@ -351,7 +351,7 @@ class CarState(CarStateBase):
       ("SCC12", 50),
 
       ("TPMS11", 1),
-      ("LFAHDA_MFC", 1),
+      ("LFAHDA_MFC", 0),
     ]
 
 
