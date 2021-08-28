@@ -327,7 +327,7 @@ class LateralPlanner():
     plan_send.lateralPlan.laneChangeState = self.lane_change_state
     plan_send.lateralPlan.laneChangeDirection = self.lane_change_direction
     plan_send.lateralPlan.laneLess = not self.lanelines
-    plan_send.lateralPlan.model_speed = float(self.LP.model_speed)
+    plan_send.lateralPlan.modelSpeed = float(self.LP.model_speed)
 
     pm.send('lateralPlan', plan_send)
 
