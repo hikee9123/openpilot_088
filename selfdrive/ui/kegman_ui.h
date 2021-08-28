@@ -536,7 +536,7 @@ static void bb_ui_draw_UI(UIState *s)
 
   if( scene.liveParameters.getValid() )
   {
-    ui_print(s, xpos, ypos+50, "sR:%.2f", scene.liveParameters.getSteerRatio() )
+    ui_print(s, xpos, ypos+50, "sR:%.2f", scene.liveParameters.getSteerRatio() );
 
   }
 
