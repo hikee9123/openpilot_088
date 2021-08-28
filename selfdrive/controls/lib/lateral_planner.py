@@ -119,9 +119,9 @@ class LateralPlanner():
       lanelines = False
     elif self.lanelines:
       lanelines = True
-    else:
-      if vEgo_kph < 15:
-        lanelines = False
+    #else:
+    #  if vEgo_kph < 15:
+    #   lanelines = False
     return lanelines
 
   def auto_lanechange( self, md, torque_applied ):
