@@ -125,6 +125,7 @@ typedef struct UIScene {
 
 
   // atom
+  cereal::LiveParametersData::Reader liveParameters;
   cereal::GpsLocationData::Reader gpsLocationExternal;
   cereal::DeviceState::Reader deviceState;
   cereal::LiveNaviData::Reader liveNaviData;

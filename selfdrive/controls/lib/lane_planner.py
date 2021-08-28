@@ -20,6 +20,8 @@ else:
   PATH_OFFSET = 0.0
 
 
+
+
 class LanePlanner:
   def __init__(self, wide_camera=False):
     self.ll_t = np.zeros((TRAJECTORY_SIZE,))
@@ -42,6 +44,44 @@ class LanePlanner:
 
     self.camera_offset = -CAMERA_OFFSET if wide_camera else CAMERA_OFFSET
     self.path_offset = -PATH_OFFSET if wide_camera else PATH_OFFSET
+
+    # atom
+    self.MAX_MODEL_SPEED = 71.    #255.0
+    self.MIN_MODEL_SPEED = 10.    # 30 
+    self.old_model_speed = self.MAX_MODEL_SPEED
+
+
+  def cal_model_speed(self, md, v_ego):
+    #md = sm['modelV2']
+    if len(md.position.x) == TRAJECTORY_SIZE and len(md.position.y) == TRAJECTORY_SIZE:
+      x = md.position.x
+      y = md.position.y
+      dy = np.gradient(y, x)
+      d2y = np.gradient(dy, x)
+      curv = d2y / (1 + dy ** 2) ** 1.5
+      curv = curv[5:TRAJECTORY_SIZE-10]
+      a_y_max = 2.975 - v_ego * 0.0375  # ~1.85 @ 75mph, ~2.6 @ 25mph
+      v_curvature = np.sqrt(a_y_max / np.clip(np.abs(curv), 1e-4, None))
+      model_speed = np.mean(v_curvature) * 0.9 * self.curvature_gain
+      model_speed = float(max(model_speed, self.MIN_MODEL_SPEED))
+      if np.isnan(model_speed):
+        model_speed = self.MAX_MODEL_SPEED
+
+      if model_speed > self.MAX_MODEL_SPEED:
+        model_speed = self.MAX_MODEL_SPEED                
+
+      self.model_speed = model_speed
+      delta_model = self.model_speed  - self.old_model_speed
+      if self.old_model_speed == self.model_speed:
+          pass
+      elif delta_model < -1:
+          self.old_model_speed -= 0.4  #model_speed
+      elif delta_model > 0:
+          self.old_model_speed += 0.2
+      else:
+          self.old_model_speed = self.model_speed
+
+    return  self.old_model_speed    
 
   def parse_model(self, md):
     if len(md.laneLines) == 4 and len(md.laneLines[0].t) == TRAJECTORY_SIZE:

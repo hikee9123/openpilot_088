@@ -169,6 +169,7 @@ class LateralPlanner():
     steeringTorqueAbs = abs(sm['carState'].steeringTorque)
 
     md = sm['modelV2']
+    self.LP.cal_model_speed( md, v_ego )
     self.LP.parse_model(sm['modelV2'])
     if len(md.position.x) == TRAJECTORY_SIZE and len(md.orientation.x) == TRAJECTORY_SIZE:
       self.path_xyz = np.column_stack([md.position.x, md.position.y, md.position.z])

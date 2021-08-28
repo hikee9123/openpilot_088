@@ -508,7 +508,7 @@ static void bb_draw_tpms(UIState *s, int viz_tpms_x, int viz_tpms_y) {
 
 static void bb_ui_draw_UI(UIState *s)
 {
-  //const UIScene *scene = &s->scene;
+  UIScene &scene = s->scene;
   const int bb_dml_w = 180;
   const int bb_dml_x = (0 + bdr_s);
   const int bb_dml_y = (0 + bdr_s) + 220;
@@ -534,8 +534,14 @@ static void bb_ui_draw_UI(UIState *s)
   nvgFillColor(s->vg, nvgRGBA(255, 255, 255, 255));    
 
 
-  auto lead_one = (*s->sm)["modelV2"].getModelV2().getLeadsV3()[0];
+  if( scene.liveParameters.getValid() )
+  {
+    ui_print(s, xpos, ypos+50, "sR:%.2f", scene.liveParameters.getSteerRatio() )
+
+  }
+
 /*  
+  auto lead_one = (*s->sm)["modelV2"].getModelV2().getLeadsV3()[0];
   if ( lead_one.getProb() > 0.0 ) {
     ui_print(s, xpos, ypos+50, "P:%.2f", lead_one.getProb()  );
     ui_print(s, xpos, ypos+100, "X:%.1f", lead_one.getX()[0]  );
@@ -543,7 +549,7 @@ static void bb_ui_draw_UI(UIState *s)
     ui_print(s, xpos, ypos+200, "V:%.1f", lead_one.getV()[0]  );
     ui_print(s, xpos, ypos+250, "A:%.1f", lead_one.getA()[0]  );
   }
-*/
+
   if ( lead_one.getProb() > 0.0 ) {
     auto model = (*s->sm)["modelV2"].getModelV2();
     auto model_position = model.getPosition();
@@ -553,5 +559,6 @@ static void bb_ui_draw_UI(UIState *s)
     ui_print(s, xpos, ypos+200, "Z:%.3f", model_position.getZ()[0]  );
     ui_print(s, xpos, ypos+250, "T:%.3f", model_position.getT()[0]  );
   }
+*/
 }
 //BB END: functions added for the display of various items
