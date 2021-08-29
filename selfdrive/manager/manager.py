@@ -179,14 +179,14 @@ def manager_thread():
       break
 
 def map_exec():
-  map_enabled = int(Params().get("OpkrMapEnable"))
-  if map_enabled == 2:
-    os.system("am start com.mnsoft.mappyobn/com.mnsoft.mappy.MainActivity &")  # map 실행.
+  os.system("am start com.mnsoft.mappyobn/com.mnsoft.mappy.MainActivity &")  # map 실행.
 
 def map_hide():
-  map_enabled = int(Params().get("OpkrMapEnable"))
-  if map_enabled == 2:
-    os.system("am start --activity-task-on-home com.opkr.maphack/com.opkr.maphack.MainActivity")  # map backgrand로 전환합니다.
+  os.system("am start --activity-task-on-home com.opkr.maphack/com.opkr.maphack.MainActivity")  # map backgrand로 전환합니다.
+
+def map_return():
+  os.system("am start --activity-task-on-home com.mnsoft.mappyobn/com.mnsoft.mappy.MainActivity")
+
 
 def main():
   prepare_only = os.getenv("PREPAREONLY") is not None

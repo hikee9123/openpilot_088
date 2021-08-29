@@ -101,6 +101,6 @@ if __name__ == "__main__":
     spinner = Spinner()
     spinner.update_progress(0, 100)
     build(spinner, dirty)
-  map_enabled = int(Params().get("OpkrMapEnable"))
-  if map_enabled == 2:
+  navi_on_boot = int(Params().get("OpkrRunNaviOnBoot"))
+  if navi_on_boot:
     os.system("am start com.mnsoft.mappyobn/com.mnsoft.mappy.MainActivity &")  # map 실행.
