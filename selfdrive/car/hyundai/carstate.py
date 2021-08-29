@@ -324,7 +324,7 @@ class CarState(CarStateBase):
       ("ACCMode", "SCC12", 1),
 
       ("Navi_SCC_Camera_Act", "SCC11", 0),
-      #("Navi_SCC_Camera_Status", "SCC11", 0),
+      ("NEW_SIGNAL_1", "HDA11_MFC", 0),
       ("TauGapSet", "SCC11", 4),
 
       # TPMS
