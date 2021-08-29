@@ -244,7 +244,6 @@ static void update_state(UIState *s) {
    if (sm.updated("lateralPlan"))
    {
     scene.lateralPlan = sm["lateralPlan"].getLateralPlan();
-    scene.end_to_end = scene.lateralPlan.getLaneLess();
    } 
 }
 
