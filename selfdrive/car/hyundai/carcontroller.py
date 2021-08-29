@@ -152,7 +152,7 @@ class CarController():
     str_log1 = 'LKAS={:2.0f} torg={:5.0f} {:5.0f}'.format( CS.lkas_button_on,  apply_steer, CS.out.steeringTorque  )
     trace1.printf2( '{}'.format( str_log1 ) )
 
-    str_log1 = 'MODE={:.0f} GAP={:.0f} HW={:.0f} NC={:.0f} HV={:.0f}'.format( CS.cruise_set_mode, CS.out.cruiseState.gapSet,  CS.is_highway, CS.navi_camera_status, CS.hda_VsetReq  )
+    str_log1 = 'MODE={:.0f} GAP={:.0f} HW={:.0f}'.format( CS.cruise_set_mode, CS.out.cruiseState.gapSet,  CS.is_highway  )
 
     trace1.printf3( '{}'.format( str_log1 ) )
 
@@ -201,10 +201,7 @@ class CarController():
     if frame % 5 == 0:
       if self.car_fingerprint in FEATURES["send_lfa_mfa"]:
         can_sends.append(create_lfahda_mfc(self.packer, enabled))
-      else:
-        activated_hda = CS.is_highway #if enabled else 0
-        # activated_hda: 0 - off, 1 - main road, 2 - highway
-        can_sends.append(create_hda_mfc(self.packer, activated_hda))
+
 
     self.lkas11_cnt += 1
     return can_sends
