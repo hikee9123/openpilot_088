@@ -46,7 +46,7 @@ class LanePlanner:
     self.path_offset = -PATH_OFFSET if wide_camera else PATH_OFFSET
 
     # atom
-    self.MAX_MODEL_SPEED = 71.    #255.0
+    self.MAX_MODEL_SPEED = 200.    # 71 , 255.0
     self.MIN_MODEL_SPEED = 10.    # 30 
     self.old_model_speed = self.MAX_MODEL_SPEED
     self.curvature_gain  = 0.8
