@@ -63,7 +63,7 @@ class MapsdThread(threading.Thread):
             os.system("pkill com.mnsoft.mappyobn")
         elif self.map_exec_status == False: 
             self.map_exec_status = True
-            os.system("am start com.mnsoft.mappyobn/com.mnsoft.mappy.MainActivity &")
+            os.system("am start com.mnsoft.mappyobn/com.mnsoft.mappy.MainActivity &")  # map 실행.
             if self.map_enabled == 2: 
                 self.target_speed_map_counter2 = 3   # map 실행후 3초후 backgrand로 전환합니다.
         elif self.map_enabled == 2:  # map backgrand
