@@ -49,6 +49,7 @@ class LanePlanner:
     self.MAX_MODEL_SPEED = 71.    #255.0
     self.MIN_MODEL_SPEED = 10.    # 30 
     self.old_model_speed = self.MAX_MODEL_SPEED
+    self.curvature_gain  = 0.8
 
 
   def cal_model_speed(self, md, v_ego):
