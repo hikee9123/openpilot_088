@@ -178,12 +178,22 @@ def manager_thread():
     if params.get_bool("DoUninstall"):
       break
 
+def map_exec():
+  map_enabled = int(Params().get("OpkrMapEnable"))
+  if map_enabled == 2:
+    os.system("am start com.mnsoft.mappyobn/com.mnsoft.mappy.MainActivity &")  # map 실행.
+
+def map_hide():
+  map_enabled = int(Params().get("OpkrMapEnable"))
+  if map_enabled == 2:
+    os.system("am start --activity-task-on-home com.opkr.maphack/com.opkr.maphack.MainActivity")  # map backgrand로 전환합니다.
 
 def main():
   prepare_only = os.getenv("PREPAREONLY") is not None
 
   manager_init()
-
+  
+  map_hide()
   # Start UI early so prepare can happen in the background
   if not prepare_only:
     managed_processes['ui'].start()
